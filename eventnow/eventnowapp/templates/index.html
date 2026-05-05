@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventNow — Cloud-Based Event Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0b5394',
+            surface: '#f8fafc',
+            accent: '#38bdf8',
+            success: '#15803d',
+            warning: '#b45309',
+            danger: '#b91c1c',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-slate-800 font-sans antialiased">
+
+  <!-- Skip to main content -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-md z-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-white">
+    Skip to main content
+  </a>
+
+  <!-- Navigation -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+      <div class="flex items-center justify-between h-16">
+
+        <a href="index.html" class="flex items-center gap-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" aria-label="EventNow home">
+          <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center" aria-hidden="true">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <span class="text-xl font-bold text-primary">EventNow</span>
+        </a>
+
+        <div class="hidden md:flex items-center gap-8">
+          <a href="events.html" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary px-1">Browse Events</a>
+          <a href="#features" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary px-1">Features</a>
+          <a href="#pricing" class="text-sm font-medium text-slate-600 hover:text-primary transition-colors rounded focus:outline-none focus:ring-2 focus:ring-primary px-1">Pricing</a>
+        </div>
+
+        <div class="hidden md:flex items-center gap-3">
+          <a href="login.html" class="text-sm font-medium text-slate-700 hover:text-primary px-3 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px] flex items-center">Log in</a>
+          <a href="login.html" class="text-sm font-semibold bg-primary text-white px-5 py-2.5 rounded-md hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-h-[44px] flex items-center">Get Started</a>
+        </div>
+
+        <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-md text-slate-600 hover:text-primary hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+
+      <div id="mobile-menu" class="md:hidden hidden border-t border-slate-100 pb-4" role="navigation" aria-label="Mobile navigation">
+        <div class="pt-4 flex flex-col gap-1">
+          <a href="events.html" class="text-sm font-medium text-slate-700 hover:text-primary hover:bg-slate-50 px-3 py-2.5 rounded-md min-h-[44px] flex items-center">Browse Events</a>
+          <a href="#features" class="text-sm font-medium text-slate-700 hover:text-primary hover:bg-slate-50 px-3 py-2.5 rounded-md min-h-[44px] flex items-center">Features</a>
+          <a href="#pricing" class="text-sm font-medium text-slate-700 hover:text-primary hover:bg-slate-50 px-3 py-2.5 rounded-md min-h-[44px] flex items-center">Pricing</a>
+          <div class="border-t border-slate-100 mt-2 pt-3 flex flex-col gap-2">
+            <a href="login.html" class="text-sm font-medium text-slate-700 px-3 py-2.5 rounded-md hover:bg-slate-50 min-h-[44px] flex items-center">Log in</a>
+            <a href="login.html" class="text-sm font-semibold bg-primary text-white px-4 py-2.5 rounded-md text-center hover:bg-blue-800 min-h-[44px] flex items-center justify-center">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-primary via-blue-700 to-blue-900 text-white py-28 px-4" aria-labelledby="hero-heading">
+      <div class="max-w-4xl mx-auto text-center">
+        <span class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-8">
+          <span class="w-2 h-2 bg-accent rounded-full animate-pulse" aria-hidden="true"></span>
+          Cloud-Based Event Management Platform
+        </span>
+        <h1 id="hero-heading" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+          The All-in-One Platform<br>for Unforgettable Events
+        </h1>
+        <p class="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+          From intimate meetups to large-scale conferences — EventNow makes it effortless to create, promote, schedule, and manage your events in one place.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="events.html" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-primary font-semibold rounded-md hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary min-h-[44px] text-base">
+            Browse Events
+          </a>
+          <a href="login.html" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent text-slate-900 font-semibold rounded-md hover:bg-sky-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary min-h-[44px] text-base">
+            Organise an Event
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats bar -->
+    <section class="bg-white border-b border-slate-200 py-10 px-4" aria-label="Platform statistics">
+      <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-4xl font-extrabold text-primary">2.4k+</div>
+          <div class="text-sm text-slate-500 mt-1 font-medium">Events Hosted</div>
+        </div>
+        <div>
+          <div class="text-4xl font-extrabold text-primary">18k+</div>
+          <div class="text-sm text-slate-500 mt-1 font-medium">Registrations</div>
+        </div>
+        <div>
+          <div class="text-4xl font-extrabold text-primary">340+</div>
+          <div class="text-sm text-slate-500 mt-1 font-medium">Organisers</div>
+        </div>
+        <div>
+          <div class="text-4xl font-extrabold text-primary">98%</div>
+          <div class="text-sm text-slate-500 mt-1 font-medium">Satisfaction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-24 px-4" aria-labelledby="features-heading">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 id="features-heading" class="text-3xl font-bold text-slate-900 mb-4">Everything you need to run great events</h2>
+          <p class="text-base text-slate-500 max-w-xl mx-auto">Powerful tools for organisers. A seamless experience for attendees.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <article class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-md hover:border-primary/30 transition-all">
+            <div class="w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            </div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Event Creation</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Build a professional event website with rich descriptions, cover images, and all the details attendees need.</p>
+          </article>
+          <article class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-md hover:border-primary/30 transition-all">
+            <div class="w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Session Scheduling</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Create multi-track session programmes with drag-and-drop scheduling powered by FullCalendar.</p>
+          </article>
+          <article class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-md hover:border-primary/30 transition-all">
+            <div class="w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Event Registration</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Attendees register in seconds and personalise their experience by selecting the sessions most relevant to them.</p>
+          </article>
+          <article class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-md hover:border-primary/30 transition-all">
+            <div class="w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center mb-5" aria-hidden="true">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Registration Tracking</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Real-time dashboards to monitor capacity, attendance patterns, and make data-driven decisions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="bg-white border-y border-slate-200 py-24 px-4" aria-labelledby="how-heading">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 id="how-heading" class="text-3xl font-bold text-slate-900 mb-4">Up and running in minutes</h2>
+          <p class="text-base text-slate-500">Three simple steps for organisers to launch their first event.</p>
+        </div>
+        <ol class="grid sm:grid-cols-3 gap-12" aria-label="Steps to organise an event">
+          <li class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg shadow-primary/30" aria-label="Step 1">1</div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Create Your Event</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Sign up as an organiser, fill in your event details, and publish your dedicated event page instantly.</p>
+          </li>
+          <li class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg shadow-primary/30" aria-label="Step 2">2</div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Schedule Sessions</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Add tracks and sessions, assign speakers and rooms, and set capacity limits for each time slot.</p>
+          </li>
+          <li class="flex flex-col items-center text-center">
+            <div class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-5 shadow-lg shadow-primary/30" aria-label="Step 3">3</div>
+            <h3 class="font-semibold text-slate-900 mb-2 text-base">Track Registrations</h3>
+            <p class="text-sm text-slate-500 leading-relaxed">Watch registrations roll in, monitor session capacity in real time, and export attendee data anytime.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 px-4" aria-labelledby="pricing-heading">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 id="pricing-heading" class="text-3xl font-bold text-slate-900 mb-4">Simple, transparent pricing</h2>
+          <p class="text-base text-slate-500">Choose the plan that fits your event needs.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <article class="bg-white border border-slate-200 rounded-lg p-7">
+            <h3 class="font-bold text-slate-900 text-lg mb-1">Starter</h3>
+            <div class="text-3xl font-extrabold text-slate-900 mb-1">Free</div>
+            <p class="text-sm text-slate-500 mb-6">Perfect for small one-off events.</p>
+            <ul class="text-sm text-slate-600 space-y-2 mb-8" aria-label="Starter plan features">
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>1 active event</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Up to 50 attendees</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>2 session tracks</li>
+            </ul>
+            <a href="login.html" class="block text-center text-sm font-semibold border-2 border-primary text-primary px-4 py-2.5 rounded-md hover:bg-primary hover:text-white transition-colors min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">Get Started Free</a>
+          </article>
+          <article class="bg-primary border border-primary rounded-lg p-7 shadow-lg shadow-primary/20 relative">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-slate-900 text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+            <h3 class="font-bold text-white text-lg mb-1">Pro</h3>
+            <div class="text-3xl font-extrabold text-white mb-1">$29<span class="text-lg font-medium text-blue-200">/mo</span></div>
+            <p class="text-sm text-blue-100 mb-6">For growing event organisers.</p>
+            <ul class="text-sm text-blue-100 space-y-2 mb-8" aria-label="Pro plan features">
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>10 active events</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Up to 500 attendees per event</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Unlimited session tracks</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-accent flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Registration analytics</li>
+            </ul>
+            <a href="login.html" class="block text-center text-sm font-semibold bg-white text-primary px-4 py-2.5 rounded-md hover:bg-slate-100 transition-colors min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary">Start Pro Trial</a>
+          </article>
+          <article class="bg-white border border-slate-200 rounded-lg p-7">
+            <h3 class="font-bold text-slate-900 text-lg mb-1">Enterprise</h3>
+            <div class="text-3xl font-extrabold text-slate-900 mb-1">$99<span class="text-lg font-medium text-slate-400">/mo</span></div>
+            <p class="text-sm text-slate-500 mb-6">For large-scale conferences.</p>
+            <ul class="text-sm text-slate-600 space-y-2 mb-8" aria-label="Enterprise plan features">
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Unlimited events</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Unlimited attendees</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Priority support</li>
+              <li class="flex items-center gap-2"><svg class="w-4 h-4 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Custom domain</li>
+            </ul>
+            <a href="login.html" class="block text-center text-sm font-semibold border-2 border-primary text-primary px-4 py-2.5 rounded-md hover:bg-primary hover:text-white transition-colors min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">Contact Sales</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="bg-gradient-to-r from-primary to-blue-800 py-20 px-4 text-center" aria-labelledby="cta-heading">
+      <div class="max-w-3xl mx-auto">
+        <h2 id="cta-heading" class="text-3xl font-bold text-white mb-4">Ready to host your next event?</h2>
+        <p class="text-blue-100 mb-8 text-base">Join hundreds of organisers already using EventNow to create memorable experiences.</p>
+        <a href="login.html" class="inline-flex items-center justify-center px-8 py-3.5 bg-white text-primary font-semibold rounded-md hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary min-h-[44px] text-base">
+          Start for Free
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-14 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between gap-10 mb-10">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-7 h-7 bg-primary rounded-md flex items-center justify-center" aria-hidden="true">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="text-white font-bold text-lg">EventNow</span>
+          </div>
+          <p class="text-sm max-w-xs leading-relaxed">Cloud-based event management for organisers and attendees of all event formats and sizes.</p>
+        </div>
+        <nav aria-label="Footer navigation">
+          <ul class="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+            <li><a href="events.html" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">Browse Events</a></li>
+            <li><a href="login.html" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">Log in</a></li>
+            <li><a href="organiser-dashboard.html" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">For Organisers</a></li>
+            <li><a href="#" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-accent rounded">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="border-t border-slate-800 pt-6 text-xs text-slate-500">
+        © 2026 EventNow. All rights reserved. INFS3202 — University of Queensland.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      const isOpen = !menu.classList.contains('hidden');
+      menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      btn.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+    });
+  </script>
+</body>
+</html>
