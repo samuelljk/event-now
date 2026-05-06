@@ -1,5 +1,5 @@
 from django.db import models
-from .users import User
+from . import User
 
 class Venue(models.Model):
     id = models.AutoField(primary_key=True)

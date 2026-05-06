@@ -11,6 +11,12 @@
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
+      <assistant-state connection-id="8fc93825-117d-4320-bb99-e23009633924" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+        <tools />
+      </assistant-state>
+      <assistant-state connection-id="8fc93825-117d-4320-bb99-e23009633924" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+        <tools />
+      </assistant-state>
       <assistant-state connection-id="23fedb4a-1202-48f3-a03a-fe51ec67071c" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="8796351D690E468FBABC9A4A361D45FD" availability="AVAILABLE" acknowledgement="ENGAGED" selected="true">
         <chats>
           <chat id="8796351D690E468FBABC9A4A361D45FD" title="" session-signature="" timestamp="1778071739431">
@@ -51,6 +57,9 @@
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="8fc93825-117d-4320-bb99-e23009633924" />
   </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="8fc93825-117d-4320-bb99-e23009633924" dataset="main.django_migrations" active-filter-id="" />
+  </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
   </component>
@@ -74,7 +83,7 @@
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="CUSTOM" />
-          <database-version value="9999.0" />
+          <database-version value="3.5" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
@@ -88,7 +97,7 @@
           <protocol value="" />
           <url-parameters />
           <files>
-            <file path="$PROJECT_DIR$/../../../../../../../Codespace/django/db.sqlite3" schema="main" />
+            <file path="$PROJECT_DIR$/db.sqlite3" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
