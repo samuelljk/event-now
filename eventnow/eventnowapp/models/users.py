@@ -30,6 +30,7 @@ class Identity(models.Model):
     access_token = models.CharField(max_length=255)
     refresh_token = models.CharField(max_length=255)
     token_expires_at = models.DateTimeField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,5 +38,6 @@ class Password(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     password_hash = models.CharField(max_length=255, null=False, blank=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
