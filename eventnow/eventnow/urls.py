@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('eventnow/', include('eventnowapp.urls')),
     path('eventnow/admin', admin.site.urls),
+
+    path('eventnow/', include('eventnowapp.events.urls')),
+    path('eventnow/accounts/', include('eventnowapp.accounts.urls')),
+    # path('eventnow/accounts/', include('eventnowapp.accounts.urls')),
 ]
