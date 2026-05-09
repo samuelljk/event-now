@@ -1,4 +1,3 @@
-from .users import User, Password, Identity
-from .events import Venue, Event, Track, Session
-from .registrations import EventRegistration, SessionRegistration
-from .subscriptions import Subscription, SubscriptionPlan
+from eventnowapp.accounts.models import User, Password, Identity, SubscriptionPlan, Subscription
+from eventnowapp.events.models import Venue, Event, Track, Session
+from eventnowapp.bookings.models import EventRegistration, SessionRegistration

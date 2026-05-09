@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -52,6 +53,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_attendee(self):
         return self.role == User.Role.ATTENDEES
 
+    class Meta:
+        app_label = 'eventnowapp'
+
 
 class Identity(models.Model):
     id = models.AutoField(primary_key=True)
@@ -66,12 +70,47 @@ class Identity(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        app_label = 'eventnowapp'
         unique_together = ('provider', 'provider_user_id')
+
 
 class Password(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='passwords')
     password_hash = models.CharField(max_length=255, null=False, blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'
+
+
+class SubscriptionPlan(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    max_events = models.IntegerField()
+    max_attendees_per_event = models.IntegerField()
+    is_active = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'
+
+
+class Subscription(models.Model):
+    id = models.AutoField(primary_key=True)
+    organiser = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
+    status = models.CharField(max_length=255)
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'

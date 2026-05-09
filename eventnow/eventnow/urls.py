@@ -21,6 +21,6 @@ urlpatterns = [
     path('eventnow/admin', admin.site.urls),
 
     path('eventnow/', include('eventnowapp.events.urls')),
+    path('eventnow/accounts/',  include('allauth.urls')),
     path('eventnow/accounts/', include('eventnowapp.accounts.urls')),
-    # path('eventnow/accounts/', include('eventnowapp.accounts.urls')),
 ]

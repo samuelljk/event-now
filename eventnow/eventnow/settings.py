@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +31,9 @@ ALLOWED_HOSTS = ['infs3202-bf940b7e.uqcloud.net', '127.0.0.1']
 
 # Application definition
 
+AUTH_USER_MODEL = 'eventnowapp.User'
+SITE_ID = 1
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,10 +42,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # AllAuth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+
     # Custom Apps
     'eventnowapp',
     'eventnowapp.accounts',
     'eventnowapp.events',
+    'eventnowapp.bookings',
 ]
 
 MIDDLEWARE = [
@@ -52,7 +65,47 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # AllAuth
+    'allauth.account.middleware.AccountMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# ── Allauth local auth ──────────────────────────────────────────────
+ACCOUNT_LOGIN_METHODS        = {'email'}
+ACCOUNT_SIGNUP_FIELDS        = ['email*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION   = 'none'          # → 'mandatory' in production
+ACCOUNT_SIGNUP_FORM_CLASS    = 'eventnowapp.accounts.forms.EventNowSignupForm'
+ACCOUNT_ADAPTER              = 'eventnowapp.accounts.adapters.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER        = 'eventnowapp.accounts.adapters.CustomSocialAccountAdapter'
+
+# ── Redirects ───────────────────────────────────────────────────────
+LOGIN_URL                    = '/eventnow/accounts/login/'
+LOGIN_REDIRECT_URL           = '/eventnow/accounts/dashboard/'
+ACCOUNT_LOGOUT_REDIRECT_URL  = '/eventnow/'
+
+# ── Social providers ────────────────────────────────────────────────
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
+            'secret':    os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+        },
+        'SCOPE':       ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
+    'github': {
+        'APP': {
+            'client_id': os.environ.get('GITHUB_CLIENT_ID', ''),
+            'secret':    os.environ.get('GITHUB_CLIENT_SECRET', ''),
+        },
+        'SCOPE': ['user:email'],
+    },
+}
 
 ROOT_URLCONF = 'eventnow.urls'
 

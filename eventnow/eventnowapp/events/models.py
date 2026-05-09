@@ -1,5 +1,6 @@
 from django.db import models
-from . import User
+from eventnowapp.accounts.models import User
+
 
 class Venue(models.Model):
     id = models.AutoField(primary_key=True)
@@ -10,6 +11,10 @@ class Venue(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'
+
 
 class Event(models.Model):
     id = models.AutoField(primary_key=True)
@@ -31,6 +36,10 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        app_label = 'eventnowapp'
+
+
 class Track(models.Model):
     id = models.AutoField(primary_key=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -39,6 +48,10 @@ class Track(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'
+
 
 class Session(models.Model):
     id = models.AutoField(primary_key=True)
@@ -54,3 +67,6 @@ class Session(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'eventnowapp'
