@@ -21,7 +21,6 @@ class Event(models.Model):
     organiser = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='events_x',
     )
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
