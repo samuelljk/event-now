@@ -79,13 +79,13 @@ AUTHENTICATION_BACKENDS = [
 ACCOUNT_LOGIN_METHODS        = {'email'}
 ACCOUNT_SIGNUP_FIELDS        = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION   = 'none'          # → 'mandatory' in production
-ACCOUNT_SIGNUP_FORM_CLASS    = 'eventnowapp.accounts.forms.EventNowSignupForm'
+ACCOUNT_SIGNUP_FORM_CLASS    = 'eventnowapp.accounts.forms.SignUpForm'
 ACCOUNT_ADAPTER              = 'eventnowapp.accounts.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER        = 'eventnowapp.accounts.adapters.CustomSocialAccountAdapter'
 
 # ── Redirects ───────────────────────────────────────────────────────
-LOGIN_URL                    = '/eventnow/accounts/login/'
-LOGIN_REDIRECT_URL           = '/eventnow/accounts/dashboard/'
+LOGIN_URL                    = '/eventnow/account/login/'
+LOGIN_REDIRECT_URL           = '/eventnow/account/dashboard/'
 ACCOUNT_LOGOUT_REDIRECT_URL  = '/eventnow/'
 
 # ── Social providers ────────────────────────────────────────────────

@@ -1,0 +1,247 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — EventNow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'sans-serif'] },
+          colors: {
+            primary: '#0071e3', 'primary-dark': '#0058b3',
+            ink: '#1d1d1f', 'ink-2': '#6e6e73', 'ink-3': '#aeaeb2',
+            surface: '#f5f5f7', card: '#ffffff', border: '#d2d2d7',
+          },
+        }
+      }
+    }
+  </script>
+  <style>* { -webkit-font-smoothing: antialiased; }</style>
+</head>
+<body class="bg-surface text-ink font-sans min-h-screen flex flex-col">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-primary focus:text-white">
+    Skip to main content
+  </a>
+
+  <header class="bg-white/80 backdrop-blur-xl border-b border-border">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+      <a href="{% url 'index' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back
+      </a>
+    </div>
+  </header>
+
+  <main id="main-content" class="flex-1 flex items-center justify-center px-6 py-16">
+    <div class="w-full max-w-sm">
+
+      <!-- Role tabs -->
+      <div class="flex gap-1 p-1 bg-surface rounded-xl mb-6 border border-border" role="tablist" aria-label="Account type">
+        <button type="button" id="tab-attendee" role="tab" aria-selected="true" aria-controls="panel-attendee"
+          class="flex-1 text-sm font-medium py-2 rounded-lg bg-card text-ink shadow-sm transition-all">
+          Attendee
+        </button>
+        <button type="button" id="tab-organiser" role="tab" aria-selected="false" aria-controls="panel-organiser"
+          class="flex-1 text-sm font-medium py-2 rounded-lg text-ink-2 hover:text-ink transition-all">
+          Organiser
+        </button>
+      </div>
+
+      {% if form.errors %}
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600" role="alert">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!--
+        ONE form for both roles.
+        The hidden 'role' input is updated by the tab JS below.
+        allauth posts to account_signup, your EventNowSignupForm.save()
+        reads cleaned_data['role'] and writes it to the user.
+      -->
+      <form method="post" action="{% url 'account_signup' %}" novalidate>
+        {% csrf_token %}
+
+        <!-- Hidden role field — JS keeps this in sync with the tab -->
+        <input type="hidden" id="role-input" name="role" value="attendee">
+
+        <!-- Dynamic heading -->
+        <div class="text-center mb-8">
+          <h1 id="signup-title" class="text-2xl font-bold text-ink tracking-tight mb-1">Create account</h1>
+          <p id="signup-subtitle" class="text-sm text-ink-2">Register as an attendee</p>
+        </div>
+
+        <div class="space-y-3">
+
+          <!-- First + Last name -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="{{ form.first_name.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">First name</label>
+              <input id="{{ form.first_name.id_for_label }}"
+                     name="{{ form.first_name.html_name }}"
+                     type="text"
+                     autocomplete="given-name"
+                     required
+                     placeholder="Samuel"
+                     value="{{ form.first_name.value|default:'' }}"
+                     class="w-full px-4 py-3 text-sm border {% if form.first_name.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+              {% if form.first_name.errors %}
+                <p class="text-xs text-red-500 mt-1">{{ form.first_name.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+            <div>
+              <label for="{{ form.last_name.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">Last name</label>
+              <input id="{{ form.last_name.id_for_label }}"
+                     name="{{ form.last_name.html_name }}"
+                     type="text"
+                     autocomplete="family-name"
+                     required
+                     placeholder="Kaloh"
+                     value="{{ form.last_name.value|default:'' }}"
+                     class="w-full px-4 py-3 text-sm border {% if form.last_name.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+              {% if form.last_name.errors %}
+                <p class="text-xs text-red-500 mt-1">{{ form.last_name.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div>
+            <label for="{{ form.username.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">Username</label>
+            <input id="{{ form.username.id_for_label }}"
+                   name="{{ form.username.html_name }}"
+                   type="text"
+                   autocomplete="username"
+                   required
+                   placeholder="yourhandle"
+                   value="{{ form.username.value|default:'' }}"
+                   class="w-full px-4 py-3 text-sm border {% if form.username.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            {% if form.username.errors %}
+              <p class="text-xs text-red-500 mt-1">{{ form.username.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="{{ form.email.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">Email</label>
+            <input id="{{ form.email.id_for_label }}"
+                   name="{{ form.email.html_name }}"
+                   type="email"
+                   autocomplete="email"
+                   required
+                   placeholder="you@example.com"
+                   value="{{ form.email.value|default:'' }}"
+                   class="w-full px-4 py-3 text-sm border {% if form.email.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            {% if form.email.errors %}
+              <p class="text-xs text-red-500 mt-1">{{ form.email.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="{{ form.password1.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">Password</label>
+            <input id="{{ form.password1.id_for_label }}"
+                   name="{{ form.password1.html_name }}"
+                   type="password"
+                   autocomplete="new-password"
+                   required
+                   placeholder="At least 8 characters"
+                   class="w-full px-4 py-3 text-sm border {% if form.password1.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            {% if form.password1.errors %}
+              <p class="text-xs text-red-500 mt-1">{{ form.password1.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <label for="{{ form.password2.id_for_label }}" class="block text-xs font-medium text-ink mb-1.5">Confirm password</label>
+            <input id="{{ form.password2.id_for_label }}"
+                   name="{{ form.password2.html_name }}"
+                   type="password"
+                   autocomplete="new-password"
+                   required
+                   placeholder="Repeat your password"
+                   class="w-full px-4 py-3 text-sm border {% if form.password2.errors %}border-red-400{% else %}border-border{% endif %} rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            {% if form.password2.errors %}
+              <p class="text-xs text-red-500 mt-1">{{ form.password2.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <button type="submit"
+          class="w-full bg-primary text-white text-sm font-medium py-3 rounded-full hover:bg-primary-dark transition-colors mt-4">
+          Create account
+        </button>
+      </form>
+
+      <p class="text-center text-xs text-ink-2 mt-5">
+        Already have an account?
+        <a href="{% url 'account_login' %}" class="text-primary font-medium hover:underline ml-0.5">Sign in</a>
+      </p>
+
+      <p class="text-center text-xs text-ink-3 mt-8 leading-relaxed">
+        By continuing, you agree to our
+        <a href="#" class="text-ink-2 hover:text-ink transition-colors">Terms of Service</a>
+        and
+        <a href="#" class="text-ink-2 hover:text-ink transition-colors">Privacy Policy</a>.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const roleInput    = document.getElementById('role-input');
+    const titleEl     = document.getElementById('signup-title');
+    const subtitleEl  = document.getElementById('signup-subtitle');
+
+    const config = {
+      attendee: { title: 'Create account',           subtitle: 'Register as an attendee' },
+      organiser: { title: 'Create organiser account', subtitle: 'Start hosting events today' },
+    };
+
+    const roleTabs = [
+      { tab: document.getElementById('tab-attendee'), role: 'attendee' },
+      { tab: document.getElementById('tab-organiser'), role: 'organiser' },
+    ];
+
+    roleTabs.forEach(({ tab, role }, i) => {
+      tab.addEventListener('click', () => {
+        // Update hidden field — this is what allauth reads on POST
+        roleInput.value = role;
+
+        // Update heading text
+        titleEl.textContent    = config[role].title;
+        subtitleEl.textContent = config[role].subtitle;
+
+        // Update tab styles
+        roleTabs.forEach(({ tab: t }, j) => {
+          const active = i === j;
+          t.setAttribute('aria-selected', String(active));
+          t.className = active
+            ? 'flex-1 text-sm font-medium py-2 rounded-lg bg-card text-ink shadow-sm transition-all'
+            : 'flex-1 text-sm font-medium py-2 rounded-lg text-ink-2 hover:text-ink transition-all';
+        });
+      });
+    });
+
+    // Restore selected tab if form fails validation and page reloads
+    const savedRole = "{{ form.role.value|default:'attendee' }}";
+    if (savedRole === 'organiser') {
+      document.getElementById('tab-organiser').click();
+    }
+  </script>
+</body>
+</html>

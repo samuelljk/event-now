@@ -5,8 +5,8 @@ from django.conf import settings
 class CustomAccountAdapter(DefaultAccountAdapter):
     def get_login_redirect_url(self, request):
         if request.user.is_organiser():
-            return '/eventnow/accounts/dashboard/organiser/'
-        return '/eventnow/accounts/dashboard/attendee/'
+            return '/eventnow/account/dashboard/organiser/'
+        return '/eventnow/account/dashboard/attendee/'
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
@@ -19,9 +19,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)
         if sociallogin.account.provider == 'google':
-            picture = sociallogin.account.extra_data['picture', '']
-            user.avatar_url = picture
+            user.avatar_url = sociallogin.account.extra_data.get('picture', '')
         elif sociallogin.account.provider == 'github':
-            picture = sociallogin.account.extra_data['avatar_url', '']
-            user.avatar_url = picture
+            user.avatar_url = sociallogin.account.extra_data.get('avatar_url', '')
         return user

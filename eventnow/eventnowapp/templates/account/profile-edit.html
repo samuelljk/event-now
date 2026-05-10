@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile — EventNow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'sans-serif'] },
+          colors: {
+            primary: '#0071e3',
+            'primary-dark': '#0058b3',
+            ink: '#1d1d1f',
+            'ink-2': '#6e6e73',
+            'ink-3': '#aeaeb2',
+            surface: '#f5f5f7',
+            card: '#ffffff',
+            border: '#d2d2d7',
+            success: '#34c759',
+            warning: '#ff9500',
+            danger: '#ff3b30',
+          },
+        }
+      }
+    }
+  </script>
+  <style>* { -webkit-font-smoothing: antialiased; }</style>
+</head>
+<body class="bg-surface text-ink font-sans">
+
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg text-sm font-medium">Skip to main content</a>
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+    <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+      <a href="{% url 'profile' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to profile
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="max-w-3xl mx-auto px-6 py-10">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex items-center gap-1.5 text-xs text-ink-2">
+        <li><a href="dashboard.html" class="hover:text-ink transition-colors">Dashboard</a></li>
+        <li aria-hidden="true"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></li>
+        <li><a href="{% url 'profile' %}" class="hover:text-ink transition-colors">Profile</a></li>
+        <li aria-hidden="true"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></li>
+        <li class="text-ink font-medium">Edit</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-ink tracking-tight">Edit profile</h1>
+      <p class="text-sm text-ink-2 mt-1">Update your personal information and preferences.</p>
+    </div>
+
+    <form id="profile-form" action="{% url 'profile_edit' %}" method="post" novalidate class="space-y-4">
+      {% csrf_token %}
+
+      <!-- Profile photo -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-5">Profile photo</h2>
+        <div class="flex items-center gap-5">
+          <div id="avatar-preview" class="w-16 h-16 rounded-2xl bg-primary text-white text-xl font-bold flex items-center justify-center flex-shrink-0" aria-hidden="true">SK</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs text-ink-2 mb-3">JPG, PNG, or WebP. Max 2 MB.</div>
+            <div class="flex gap-2">
+              <label for="photo-upload" class="cursor-pointer text-xs font-medium border border-border text-ink px-4 py-2 rounded-full hover:bg-surface transition-colors">
+                Upload photo
+                <input id="photo-upload" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" aria-label="Upload profile photo">
+              </label>
+              <button type="button" id="remove-photo" class="text-xs font-medium text-danger hover:underline px-2">Remove</button>
+            </div>
+            <div class="mt-3">
+              <label for="avatar-url" class="block text-xs font-medium text-ink mb-1.5">Or paste image URL</label>
+              <input id="avatar-url" name="avatar_url" type="url"
+                value="{{ form.avatar_url.value|default:'' }}"
+                placeholder="https://example.com/photo.jpg"
+                class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal information -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-5">Personal information</h2>
+        <div class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="first-name" class="block text-xs font-medium text-ink mb-1.5">First name</label>
+              <input id="first-name" name="first_name" type="text" value="{{ form.first_name.value|default:'' }}" autocomplete="given-name" required
+                class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            </div>
+            <div>
+              <label for="last-name" class="block text-xs font-medium text-ink mb-1.5">Last name</label>
+              <input id="last-name" name="last_name" type="text" value="{{ form.last_name.value|default:'' }}" autocomplete="family-name" required
+                class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            </div>
+          </div>
+          <div>
+            <label for="display-name" class="block text-xs font-medium text-ink mb-1.5">Username</label>
+            <input id="display-name" name="username" type="text" value="{{ form.username.value|default:'' }}" placeholder="yourhandle" autocomplete="username"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+          </div>
+          <div>
+            <label for="bio" class="block text-xs font-medium text-ink mb-1.5">Bio <span class="text-ink-3 font-normal">(optional)</span></label>
+            <textarea id="bio" rows="3" maxlength="280"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none"
+              placeholder="A short bio visible on your public profile…">Software engineering student at the University of Queensland. Passionate about AI, distributed systems, and building products people love.</textarea>
+            <div class="flex justify-end mt-1">
+              <span id="bio-count" class="text-xs text-ink-3">0 / 280</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact information -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-5">Contact information</h2>
+        <div class="space-y-4">
+          <div>
+            <label for="email" class="block text-xs font-medium text-ink mb-1.5">Email address</label>
+            <input id="email" type="email" value="{{ user.email }}" autocomplete="email" readonly
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            <p class="text-xs text-ink-3 mt-1.5">Changing your email will require re-verification.</p>
+          </div>
+          <div>
+            <label for="phone" class="block text-xs font-medium text-ink mb-1.5">Phone <span class="text-ink-3 font-normal">(optional)</span></label>
+            <input id="phone" type="tel" placeholder="+61 400 000 000" autocomplete="tel"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+          </div>
+        </div>
+      </div>
+
+      <!-- Organisation -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-5">Organisation</h2>
+        <div class="space-y-4">
+          <div>
+            <label for="org-name" class="block text-xs font-medium text-ink mb-1.5">Organisation name</label>
+            <input id="org-name" type="text" value="TechConnect AU" autocomplete="organization"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+          </div>
+          <div>
+            <label for="org-website" class="block text-xs font-medium text-ink mb-1.5">Website <span class="text-ink-3 font-normal">(optional)</span></label>
+            <input id="org-website" type="url" placeholder="https://techconnect.com.au"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+          </div>
+        </div>
+      </div>
+
+      <!-- Change password -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-1">Change password</h2>
+        <p class="text-xs text-ink-2 mb-5">Leave blank to keep your current password.</p>
+        <div class="space-y-4">
+          <div>
+            <label for="current-password" class="block text-xs font-medium text-ink mb-1.5">Current password</label>
+            <input id="current-password" type="password" autocomplete="current-password"
+              class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="new-password" class="block text-xs font-medium text-ink mb-1.5">New password</label>
+              <input id="new-password" type="password" autocomplete="new-password" placeholder="At least 8 characters"
+                class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink placeholder-ink-3 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            </div>
+            <div>
+              <label for="confirm-password" class="block text-xs font-medium text-ink mb-1.5">Confirm new password</label>
+              <input id="confirm-password" type="password" autocomplete="new-password"
+                class="w-full px-4 py-3 text-sm border border-border rounded-xl bg-card text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification preferences -->
+      <div class="bg-card rounded-2xl border border-border p-6">
+        <h2 class="text-sm font-semibold text-ink mb-5">Notification preferences</h2>
+        <div class="space-y-4">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" checked class="mt-0.5 w-4 h-4 accent-primary rounded flex-shrink-0">
+            <div>
+              <div class="text-sm font-medium text-ink">Registration confirmations</div>
+              <div class="text-xs text-ink-2 mt-0.5">Receive an email when you successfully register for an event.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" checked class="mt-0.5 w-4 h-4 accent-primary rounded flex-shrink-0">
+            <div>
+              <div class="text-sm font-medium text-ink">Event reminders</div>
+              <div class="text-xs text-ink-2 mt-0.5">Get a reminder 24 hours before events you're registered for.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" checked class="mt-0.5 w-4 h-4 accent-primary rounded flex-shrink-0">
+            <div>
+              <div class="text-sm font-medium text-ink">New registrations (organiser)</div>
+              <div class="text-xs text-ink-2 mt-0.5">Email notifications when attendees register for your events.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-primary rounded flex-shrink-0">
+            <div>
+              <div class="text-sm font-medium text-ink">Weekly digest</div>
+              <div class="text-xs text-ink-2 mt-0.5">A weekly summary of activity across your events.</div>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-primary rounded flex-shrink-0">
+            <div>
+              <div class="text-sm font-medium text-ink">Marketing emails</div>
+              <div class="text-xs text-ink-2 mt-0.5">EventNow news, feature announcements, and tips.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Save / Cancel -->
+      <div class="flex flex-col sm:flex-row gap-3 pb-8">
+        <button type="submit" class="sm:flex-1 text-sm bg-primary text-white py-3 rounded-full font-medium hover:bg-primary-dark transition-colors">Save changes</button>
+        <a href="{% url 'profile' %}" class="sm:flex-none text-center text-sm border border-border text-ink py-3 px-8 rounded-full font-medium hover:bg-card transition-colors">Cancel</a>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface border-t border-border">
+    <div class="max-w-3xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="text-sm font-medium text-ink">EventNow</span>
+      <p class="text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Bio character counter
+    const bioTextarea = document.getElementById('bio');
+    const bioCount = document.getElementById('bio-count');
+    function updateBioCount() {
+      const len = bioTextarea.value.length;
+      bioCount.textContent = `${len} / 280`;
+      bioCount.className = len > 250 ? 'text-xs text-warning' : 'text-xs text-ink-3';
+    }
+    bioTextarea.addEventListener('input', updateBioCount);
+    updateBioCount();
+
+    // Photo upload preview
+    const photoInput = document.getElementById('photo-upload');
+    const avatarPreview = document.getElementById('avatar-preview');
+    photoInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Profile photo" class="w-full h-full object-cover rounded-2xl">`;
+      };
+      reader.readAsDataURL(file);
+    });
+    document.getElementById('remove-photo').addEventListener('click', () => {
+      photoInput.value = '';
+      avatarPreview.innerHTML = 'SK';
+      avatarPreview.className = 'w-16 h-16 rounded-2xl bg-primary text-white text-xl font-bold flex items-center justify-center flex-shrink-0';
+    });
+
+    // Password match validation
+    const newPw = document.getElementById('new-password');
+    const confirmPw = document.getElementById('confirm-password');
+    function validatePasswords() {
+      if (confirmPw.value && newPw.value !== confirmPw.value) {
+        confirmPw.classList.add('border-danger');
+        confirmPw.classList.remove('border-border');
+      } else {
+        confirmPw.classList.remove('border-danger');
+        confirmPw.classList.add('border-border');
+      }
+    }
+    newPw.addEventListener('input', validatePasswords);
+    confirmPw.addEventListener('input', validatePasswords);
+
+  </script>
+</body>
+</html>
