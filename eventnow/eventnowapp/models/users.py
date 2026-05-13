@@ -71,7 +71,7 @@ class Identity(models.Model):
 class Password(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    password_hash = models.CharField(max_length=255, null=False, blank=False)
+    password_hash = models.CharField(max_length=255, blank=True, default='')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

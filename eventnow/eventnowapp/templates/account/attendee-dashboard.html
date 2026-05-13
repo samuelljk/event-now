@@ -47,6 +47,10 @@
       </nav>
       <div class="flex items-center gap-3">
         <a href="{% url 'organiser_dashboard' %}" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Switch to Organiser</a>
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Sign out</button>
+        </form>
         <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center" aria-label="{{ user.get_full_name }} — view profile">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
         </a>
@@ -195,6 +199,13 @@
           <div class="space-y-2">
             <a href="{% url 'profile' %}" class="block text-center text-xs font-medium border border-border text-ink py-2.5 rounded-full hover:bg-surface transition-colors">View profile</a>
             <a href="{% url 'profile_edit' %}" class="block text-center text-xs font-medium text-ink-2 py-2 hover:text-ink transition-colors">Edit profile</a>
+            <form method="post" action="{% url 'account_logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="flex items-center justify-center gap-1.5 w-full text-xs text-ink-3 hover:text-ink-2 transition-colors py-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Sign out
+              </button>
+            </form>
           </div>
         </div>
 

@@ -47,8 +47,15 @@
         <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Dashboard</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="{% url 'account_login' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Sign In</a>
-        <a href="{% url 'account_signup' %}" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors">Get Started</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Dashboard</a>
+          <a href="{% url 'dashboard' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity" aria-label="Go to your dashboard">
+            <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
+          </a>
+        {% else %}
+          <a href="{% url 'account_login' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Sign In</a>
+          <a href="{% url 'account_signup' %}" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors">Get Started</a>
+        {% endif %}
         <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-surface transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
@@ -61,8 +68,12 @@
         <a href="#pricing" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Pricing</a>
         <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Dashboard</a>
         <div class="flex gap-3 mt-3 pt-3 border-t border-border">
-          <a href="{% url 'account_login' %}" class="flex-1 text-center text-sm border border-border text-ink py-2.5 rounded-full font-medium hover:bg-surface transition-colors">Sign In</a>
-          <a href="{% url 'account_signup' %}" class="flex-1 text-center text-sm bg-primary text-white py-2.5 rounded-full font-medium hover:bg-primary-dark transition-colors">Get Started</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="flex-1 text-center text-sm bg-primary text-white py-2.5 rounded-full font-medium hover:bg-primary-dark transition-colors">Go to Dashboard</a>
+          {% else %}
+            <a href="{% url 'account_login' %}" class="flex-1 text-center text-sm border border-border text-ink py-2.5 rounded-full font-medium hover:bg-surface transition-colors">Sign In</a>
+            <a href="{% url 'account_signup' %}" class="flex-1 text-center text-sm bg-primary text-white py-2.5 rounded-full font-medium hover:bg-primary-dark transition-colors">Get Started</a>
+          {% endif %}
         </div>
       </nav>
     </div>

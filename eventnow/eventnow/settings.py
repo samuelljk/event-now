@@ -77,7 +77,7 @@ AUTHENTICATION_BACKENDS = [
 
 # ── Allauth local auth ──────────────────────────────────────────────
 ACCOUNT_LOGIN_METHODS        = {'email'}
-ACCOUNT_SIGNUP_FIELDS        = ['email*', 'password1*', 'password2*']
+ACCOUNT_SIGNUP_FIELDS        = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION   = 'none'          # → 'mandatory' in production
 ACCOUNT_SIGNUP_FORM_CLASS    = 'eventnowapp.accounts.forms.SignUpForm'
 ACCOUNT_ADAPTER              = 'eventnowapp.accounts.adapters.CustomAccountAdapter'
@@ -92,16 +92,16 @@ ACCOUNT_LOGOUT_REDIRECT_URL  = '/eventnow/'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
-            'secret':    os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+            'client_id' : '840729905878-8g3s1vih9ev9j92eiokd54551ihi7jap.apps.googleusercontent.com',
+            'secret'    : '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',
         },
         'SCOPE':       ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
     },
     'github': {
         'APP': {
-            'client_id': os.environ.get('GITHUB_CLIENT_ID', ''),
-            'secret':    os.environ.get('GITHUB_CLIENT_SECRET', ''),
+            'client_id' : 'Ov23liVX2MDrHq5b69kx',
+            'secret'    : '76fb4429e14f6a59d1630835f362ac78c5ecc998',
         },
         'SCOPE': ['user:email'],
     },
@@ -112,7 +112,7 @@ ROOT_URLCONF = 'eventnow.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'eventnowapp/templates', BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -46,7 +46,11 @@
       </nav>
       <div class="flex items-center gap-3">
         <a href="{% url 'profile_edit' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Edit profile</a>
-        <a href="profile.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Sign out</button>
+        </form>
+        <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center" aria-label="View profile">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
         </a>
       </div>
@@ -186,6 +190,22 @@
           </div>
           <span class="text-xs font-medium bg-surface text-ink-3 border border-border px-2.5 py-1 rounded-full">Off</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Sign out -->
+    <div class="bg-card rounded-2xl border border-border">
+      <div class="px-6 py-5 flex items-center justify-between gap-4">
+        <div>
+          <div class="text-sm font-medium text-ink">Sign out</div>
+          <div class="text-xs text-ink-2 mt-0.5">Sign out of your EventNow account on this device.</div>
+        </div>
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="text-xs font-medium text-ink border border-border px-4 py-2 rounded-full hover:bg-surface transition-colors whitespace-nowrap flex-shrink-0">
+            Sign out
+          </button>
+        </form>
       </div>
     </div>
 
