@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — EventNow</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'sans-serif'] },
-          colors: {
-            primary: '#0071e3',
-            'primary-dark': '#0058b3',
-            ink: '#1d1d1f',
-            'ink-2': '#6e6e73',
-            'ink-3': '#aeaeb2',
-            surface: '#f5f5f7',
-            card: '#ffffff',
-            border: '#d2d2d7',
-            success: '#34c759',
-            warning: '#ff9500',
-            danger: '#ff3b30',
-          },
-        }
-      }
-    }
-  </script>
-  <style>* { -webkit-font-smoothing: antialiased; }</style>
-</head>
-<body class="bg-surface text-ink font-sans">
+{% extends "base.html" %}
 
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg text-sm font-medium">Skip to main content</a>
+{% block title %}Dashboard — EventNow{% endblock %}
 
+{% block body %}
   <div class="flex min-h-screen">
 
     <!-- Sidebar -->
@@ -57,15 +24,15 @@
 
       <!-- Nav links -->
       <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto" aria-label="Dashboard navigation">
-        <a href="organiser-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/8 text-primary text-sm font-medium" aria-current="page">
+        <a href="{% url 'organiser_dashboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/8 text-primary text-sm font-medium" aria-current="page">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10-3a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
           Dashboard
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
+        <a href="{% url 'event_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           My Events
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
+        <a href="{% url 'event_create' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           Create Event
         </a>
@@ -123,7 +90,7 @@
             </nav>
           </div>
           <div class="flex items-center gap-3">
-            <a href="#" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors hidden sm:inline-flex items-center gap-1.5">
+            <a href="{% url 'event_create' %}" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors hidden sm:inline-flex items-center gap-1.5">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
               New event
             </a>
@@ -169,7 +136,7 @@
         <div class="bg-card rounded-2xl border border-border overflow-hidden">
           <div class="px-6 py-4 border-b border-border flex items-center justify-between">
             <h2 class="text-sm font-semibold text-ink">My Events</h2>
-            <a href="#" class="text-xs text-primary hover:underline font-medium">+ Create new</a>
+            <a href="{% url 'event_create' %}" class="text-xs text-primary hover:underline font-medium">+ Create new</a>
           </div>
 
           <!-- Desktop table -->
@@ -211,15 +178,15 @@
                   <td class="px-4 py-4 text-sm text-ink-2">{{ event.session_set.count }}</td>
                   <td class="px-6 py-4">
                     <div class="flex items-center justify-end gap-2">
-                      <a href="#" class="text-xs text-primary hover:underline font-medium">View</a>
-                      <a href="#" class="text-xs text-ink-2 hover:text-ink transition-colors">Edit</a>
+                      <a href="{% url 'event_detail' event.slug %}" class="text-xs text-primary hover:underline font-medium">View</a>
+                      <a href="{% url 'event_edit' event.slug %}" class="text-xs text-ink-2 hover:text-ink transition-colors">Edit</a>
                     </div>
                   </td>
                 </tr>
                 {% empty %}
                 <tr>
                   <td colspan="6" class="px-6 py-10 text-center text-sm text-ink-3">
-                    No events yet. <a href="#" class="text-primary hover:underline">Create your first event →</a>
+                    No events yet. <a href="{% url 'event_create' %}" class="text-primary hover:underline">Create your first event →</a>
                   </td>
                 </tr>
                 {% endfor %}
@@ -246,8 +213,8 @@
               </div>
               <div class="text-xs text-ink-2 mb-3">{{ event.eventregistration_set.count }} / {{ event.max_capacity }} registered</div>
               <div class="flex gap-3 text-xs font-medium">
-                <a href="#" class="text-primary hover:underline">View</a>
-                <a href="#" class="text-ink-2 hover:text-ink">Edit</a>
+                <a href="{% url 'event_detail' event.slug %}" class="text-primary hover:underline">View</a>
+                <a href="{% url 'event_edit' event.slug %}" class="text-ink-2 hover:text-ink">Edit</a>
               </div>
             </div>
             {% empty %}
@@ -260,6 +227,7 @@
     </div>
   </div>
 
+  {% block scripts %}
   <script>
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const sidebar = document.getElementById('sidebar');
@@ -281,5 +249,5 @@
     overlay.addEventListener('click', closeSidebar);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
   </script>
-</body>
-</html>
+  {% endblock %}
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event.title }} — EventNow{% endblock %}
+
+{% block body_class %}bg-surface text-ink font-sans min-h-screen flex flex-col{% endblock %}
+
+{% block header %}
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+  <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <div class="flex items-center gap-3">
+      <a href="{% url 'event_list' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        All events
+      </a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="text-sm font-medium border border-border text-ink px-4 py-2 rounded-full hover:bg-surface transition-colors">Dashboard</a>
+      {% else %}
+        <a href="{% url 'account_login' %}" class="text-sm font-medium bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">Sign in</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main id="main" class="flex-1">
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="max-w-5xl mx-auto px-6 pt-6">
+    {% for msg in messages %}
+    <div class="mb-3 px-4 py-3 rounded-xl text-sm font-medium
+      {% if msg.tags == 'success' %}bg-success/10 text-green-800{% else %}bg-danger/10 text-red-800{% endif %}">
+      {{ msg }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="max-w-5xl mx-auto px-6 py-8">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex items-center gap-1.5 text-xs text-ink-2">
+        <li><a href="{% url 'event_list' %}" class="hover:text-ink transition-colors">Events</a></li>
+        <li aria-hidden="true"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></li>
+        <li class="text-ink font-medium truncate max-w-xs">{{ event.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+
+      <!-- Left: event body -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Cover -->
+        {% if event.cover_image_url %}
+        <img src="{{ event.cover_image_url }}" alt="{{ event.title }}"
+             class="w-full h-64 object-cover rounded-2xl border border-border">
+        {% endif %}
+
+        <!-- Title + status -->
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 class="text-2xl font-bold text-ink tracking-tight mb-2">{{ event.title }}</h1>
+            {% if event.status == 'published' %}
+              <span class="text-xs font-medium bg-success/10 text-green-700 px-2.5 py-1 rounded-full">Published</span>
+            {% elif event.status == 'draft' %}
+              <span class="text-xs font-medium bg-warning/10 text-orange-700 px-2.5 py-1 rounded-full">Draft</span>
+            {% elif event.status == 'cancelled' %}
+              <span class="text-xs font-medium bg-danger/10 text-red-700 px-2.5 py-1 rounded-full">Cancelled</span>
+            {% else %}
+              <span class="text-xs font-medium bg-surface text-ink-3 border border-border px-2.5 py-1 rounded-full">{{ event.status|title }}</span>
+            {% endif %}
+          </div>
+
+          {% if is_owner %}
+          <div class="flex items-center gap-2">
+            <a href="{% url 'event_edit' event.slug %}"
+               class="text-sm font-medium border border-border text-ink px-4 py-2 rounded-full hover:bg-surface transition-colors">Edit event</a>
+            <a href="{% url 'event_delete' event.slug %}"
+               class="text-sm font-medium text-danger border border-danger/20 px-4 py-2 rounded-full hover:bg-danger/5 transition-colors">Delete</a>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Description -->
+        <div class="bg-card border border-border rounded-2xl p-6">
+          <h2 class="text-sm font-semibold text-ink mb-3">About this event</h2>
+          <p class="text-sm text-ink-2 leading-relaxed whitespace-pre-line">{{ event.description }}</p>
+        </div>
+
+        <!-- Tracks & Sessions -->
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold text-ink">Programme</h2>
+            {% if is_owner %}
+            <div class="flex gap-2">
+              <a href="{% url 'track_create' event.slug %}"
+                 class="text-xs font-medium text-primary border border-primary/20 bg-primary/5 px-3 py-1.5 rounded-full hover:bg-primary/10 transition-colors">+ Add track</a>
+              <a href="{% url 'session_create' event.slug %}"
+                 class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors">+ Add session</a>
+            </div>
+            {% endif %}
+          </div>
+
+          {% if tracks %}
+          <div class="space-y-4">
+            {% for track in tracks %}
+            <div class="bg-card border border-border rounded-2xl overflow-hidden">
+
+              <!-- Track header -->
+              <div class="px-5 py-4 border-b border-border flex items-center justify-between">
+                <div>
+                  <h3 class="text-sm font-semibold text-ink">{{ track.name }}</h3>
+                  {% if track.description %}
+                  <p class="text-xs text-ink-3 mt-0.5">{{ track.description }}</p>
+                  {% endif %}
+                </div>
+                {% if is_owner %}
+                <div class="flex items-center gap-2">
+                  <a href="{% url 'track_edit' event.slug track.pk %}" class="text-xs text-ink-2 hover:text-ink transition-colors">Edit</a>
+                  <a href="{% url 'track_delete' event.slug track.pk %}" class="text-xs text-danger hover:underline">Delete</a>
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Sessions in track -->
+              {% if track.session_set.all %}
+              <div class="divide-y divide-border">
+                {% for session in track.session_set.all %}
+                <div class="px-5 py-4 flex items-start justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-ink mb-0.5">{{ session.title }}</div>
+                    <div class="text-xs text-ink-2 flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                      <span>{{ session.starts_at|date:"j M, H:i" }} – {{ session.ends_at|date:"H:i" }}</span>
+                      {% if session.room %}<span>Room: {{ session.room }}</span>{% endif %}
+                      {% if session.speaker_name %}<span>Speaker: {{ session.speaker_name }}</span>{% endif %}
+                      <span>Capacity: {{ session.max_capacity }}</span>
+                    </div>
+                  </div>
+                  {% if is_owner %}
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <a href="{% url 'session_edit' event.slug session.pk %}" class="text-xs text-ink-2 hover:text-ink transition-colors">Edit</a>
+                    <a href="{% url 'session_delete' event.slug session.pk %}" class="text-xs text-danger hover:underline">Delete</a>
+                  </div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="px-5 py-6 text-center text-xs text-ink-3">No sessions in this track yet.</div>
+              {% endif %}
+
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="bg-card border border-border rounded-2xl p-8 text-center">
+            <p class="text-sm text-ink-3">No tracks yet.
+              {% if is_owner %}<a href="{% url 'track_create' event.slug %}" class="text-primary hover:underline">Add the first one →</a>{% endif %}
+            </p>
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Right: sidebar -->
+      <aside class="space-y-4">
+
+        <!-- Event info card -->
+        <div class="bg-card border border-border rounded-2xl p-5 space-y-4">
+          <h2 class="text-xs font-semibold text-ink-3 uppercase tracking-wider">Event details</h2>
+
+          <div class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-ink-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <div>
+              <div class="text-xs font-medium text-ink-2">Date</div>
+              <div class="text-sm text-ink">{{ event.starts_at|date:"j M Y, H:i" }}</div>
+              <div class="text-xs text-ink-3">to {{ event.ends_at|date:"j M Y, H:i" }}</div>
+            </div>
+          </div>
+
+          {% if event.venue %}
+          <div class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-ink-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div>
+              <div class="text-xs font-medium text-ink-2">Venue</div>
+              <div class="text-sm text-ink">{{ event.venue.name }}</div>
+              <div class="text-xs text-ink-3">{{ event.venue.address }}, {{ event.venue.city }}</div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-ink-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div>
+              <div class="text-xs font-medium text-ink-2">Capacity</div>
+              <div class="text-sm text-ink">{{ event.eventregistration_set.count }} / {{ event.max_capacity }} registered</div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-ink-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            <div>
+              <div class="text-xs font-medium text-ink-2">Organiser</div>
+              <div class="text-sm text-ink">{{ event.organiser.get_full_name }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register CTA -->
+        {% if user.is_authenticated and user.is_attendee %}
+        <button class="w-full text-sm font-medium bg-primary text-white py-3 rounded-full hover:bg-primary-dark transition-colors">
+          Register for this event
+        </button>
+        {% elif not user.is_authenticated %}
+        <a href="{% url 'account_login' %}?next={{ request.path }}"
+           class="block w-full text-center text-sm font-medium bg-primary text-white py-3 rounded-full hover:bg-primary-dark transition-colors">
+          Sign in to register
+        </a>
+        {% endif %}
+
+      </aside>
+    </div>
+  </div>
+</main>
+
+{% block footer %}
+<footer class="border-t border-border py-6 mt-8">
+  <p class="text-center text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
+</footer>
+{% endblock %}
+{% endblock %}

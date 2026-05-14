@@ -84,9 +84,9 @@ ACCOUNT_ADAPTER              = 'apps.accounts.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER        = 'apps.accounts.adapters.CustomSocialAccountAdapter'
 
 # ── Redirects ───────────────────────────────────────────────────────
-LOGIN_URL                    = '/config/account/login/'
-LOGIN_REDIRECT_URL           = '/config/account/dashboard/'
-ACCOUNT_LOGOUT_REDIRECT_URL  = '/config/'
+LOGIN_URL                    = '/eventnow/account/login/'
+LOGIN_REDIRECT_URL           = '/eventnow/account/dashboard/'
+ACCOUNT_LOGOUT_REDIRECT_URL  = '/eventnow/'
 
 # ── Social providers ────────────────────────────────────────────────
 SOCIALACCOUNT_PROVIDERS = {

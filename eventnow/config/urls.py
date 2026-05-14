@@ -27,5 +27,3 @@ urlpatterns = [
     path('eventnow/account/',   include('allauth.urls')),
     path('eventnow/account/',   include('apps.accounts.urls')),
 ]
-
-handler404 = 'apps.events.views.custom_404'

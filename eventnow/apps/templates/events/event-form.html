@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Event — EventNow{% endblock %}
+
+{% block body_class %}bg-surface text-ink font-sans min-h-screen flex flex-col{% endblock %}
+
+{% block header %}
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% if event %}{% url 'event_detail' event.slug %}{% else %}{% url 'organiser_dashboard' %}{% endif %}"
+       class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      {% if event %}Back to event{% else %}Back to dashboard{% endif %}
+    </a>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main id="main" class="flex-1 py-10 px-6">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-6">
+      <ol class="flex items-center gap-1.5 text-xs text-ink-2">
+        <li><a href="{% url 'organiser_dashboard' %}" class="hover:text-ink transition-colors">Dashboard</a></li>
+        <li aria-hidden="true"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></li>
+        {% if event %}
+        <li><a href="{% url 'event_detail' event.slug %}" class="hover:text-ink transition-colors">{{ event.title }}</a></li>
+        <li aria-hidden="true"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></li>
+        {% endif %}
+        <li class="text-ink font-medium">{{ action }} Event</li>
+      </ol>
+    </nav>
+
+    <div class="bg-card border border-border rounded-2xl overflow-hidden">
+      <div class="px-8 py-6 border-b border-border">
+        <h1 class="text-xl font-bold text-ink tracking-tight">{{ action }} Event</h1>
+        <p class="text-sm text-ink-2 mt-1">
+          {% if action == 'Create' %}Fill in the details below to publish your event.
+          {% else %}Update the details for this event.{% endif %}
+        </p>
+      </div>
+
+      <form method="post" class="px-8 py-6">
+        {% csrf_token %}
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+        <div class="mb-5 px-4 py-3 bg-danger/10 text-red-800 text-sm rounded-xl">
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="grid sm:grid-cols-2 gap-5">
+
+          <!-- Title -->
+          <div class="sm:col-span-2">
+            <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Title <span class="text-danger">*</span>
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.title.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Slug -->
+          <div class="sm:col-span-2">
+            <label for="{{ form.slug.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              URL slug <span class="text-xs text-ink-3 font-normal">(optional — auto-filled from title)</span>
+            </label>
+            {{ form.slug }}
+            {% if form.slug.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.slug.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Description -->
+          <div class="sm:col-span-2">
+            <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Description <span class="text-danger">*</span>
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.description.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Cover image URL -->
+          <div class="sm:col-span-2">
+            <label for="{{ form.cover_image_url.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Cover image URL <span class="text-xs text-ink-3 font-normal">(optional)</span>
+            </label>
+            {{ form.cover_image_url }}
+            {% if form.cover_image_url.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.cover_image_url.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Venue -->
+          <div class="sm:col-span-2">
+            <label for="{{ form.venue.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Venue <span class="text-danger">*</span>
+            </label>
+            {{ form.venue }}
+            {% if form.venue.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.venue.errors|join:", " }}</p>{% endif %}
+            <p class="mt-1.5 text-xs text-ink-3">Can't find your venue? Add it via the <a href="/eventnow/admin" target="_blank" class="text-primary hover:underline">admin panel</a>.</p>
+          </div>
+
+          <!-- Starts at -->
+          <div>
+            <label for="{{ form.starts_at.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Starts at <span class="text-danger">*</span>
+            </label>
+            {{ form.starts_at }}
+            {% if form.starts_at.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.starts_at.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Ends at -->
+          <div>
+            <label for="{{ form.ends_at.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Ends at <span class="text-danger">*</span>
+            </label>
+            {{ form.ends_at }}
+            {% if form.ends_at.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.ends_at.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label for="{{ form.status.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Status <span class="text-danger">*</span>
+            </label>
+            {{ form.status }}
+            {% if form.status.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.status.errors|join:", " }}</p>{% endif %}
+          </div>
+
+          <!-- Max capacity -->
+          <div>
+            <label for="{{ form.max_capacity.id_for_label }}" class="block text-sm font-medium text-ink mb-1.5">
+              Max capacity <span class="text-danger">*</span>
+            </label>
+            {{ form.max_capacity }}
+            {% if form.max_capacity.errors %}<p class="mt-1.5 text-xs text-danger">{{ form.max_capacity.errors|join:", " }}</p>{% endif %}
+          </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-8 flex items-center justify-between pt-6 border-t border-border">
+          <a href="{% if event %}{% url 'event_detail' event.slug %}{% else %}{% url 'organiser_dashboard' %}{% endif %}"
+             class="text-sm text-ink-2 hover:text-ink transition-colors">Cancel</a>
+          <button type="submit"
+                  class="text-sm font-medium bg-primary text-white px-6 py-3 rounded-full hover:bg-primary-dark transition-colors">
+            {% if action == 'Create' %}Create event{% else %}Save changes{% endif %}
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

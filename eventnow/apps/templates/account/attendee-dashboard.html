@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attendee Dashboard — EventNow</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'sans-serif'] },
-          colors: {
-            primary: '#0071e3',
-            'primary-dark': '#0058b3',
-            ink: '#1d1d1f',
-            'ink-2': '#6e6e73',
-            'ink-3': '#aeaeb2',
-            surface: '#f5f5f7',
-            card: '#ffffff',
-            border: '#d2d2d7',
-            success: '#34c759',
-            warning: '#ff9500',
-            danger: '#ff3b30',
-          },
-        }
-      }
-    }
-  </script>
-  <style>* { -webkit-font-smoothing: antialiased; }</style>
-</head>
-<body class="bg-surface text-ink font-sans">
+{% extends "base.html" %}
 
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg text-sm font-medium">Skip to main content</a>
+{% block title %}Attendee Dashboard — EventNow{% endblock %}
 
+{% block header %}
   <!-- Navigation -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -57,10 +24,12 @@
       </div>
     </div>
   </header>
+{% endblock %}
 
-  <main id="main" class="max-w-5xl mx-auto px-6 py-10">
+{% block content %}
 
     <!-- Welcome + breadcrumb -->
+    <div class="max-w-5xl mx-auto px-6 py-10">
     <div class="flex items-start justify-between mb-8">
       <div>
         <nav aria-label="Breadcrumb" class="mb-2">
@@ -236,8 +205,11 @@
 
       </aside>
     </div>
-  </main>
+    </div>
 
+{% endblock %}
+
+{% block footer %}
   <!-- Footer -->
   <footer class="bg-surface border-t border-border mt-10">
     <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -245,6 +217,4 @@
       <p class="text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
     </div>
   </footer>
-
-</body>
-</html>
+{% endblock %}
