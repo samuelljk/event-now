@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — EventNow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'sans-serif'] },
+          colors: {
+            primary: '#0071e3',
+            'primary-dark': '#0058b3',
+            ink: '#1d1d1f',
+            'ink-2': '#6e6e73',
+            'ink-3': '#aeaeb2',
+            surface: '#f5f5f7',
+            card: '#ffffff',
+            border: '#d2d2d7',
+          },
+        }
+      }
+    }
+  </script>
+  <style>* { -webkit-font-smoothing: antialiased; }</style>
+</head>
+<body class="bg-surface text-ink font-sans min-h-screen flex flex-col">
+
+  <!-- Nav -->
+  <header class="bg-white/80 backdrop-blur-xl border-b border-border">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+      <a href="{% url 'index' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to home
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 flex items-center justify-center px-6 py-24">
+    <div class="text-center max-w-md">
+
+      <!-- 404 display -->
+      <div class="text-[8rem] font-extrabold leading-none tracking-tighter text-border select-none mb-6">
+        404
+      </div>
+
+      <h1 class="text-2xl font-bold text-ink tracking-tight mb-3">
+        Page not found
+      </h1>
+      <p class="text-sm text-ink-2 leading-relaxed mb-10">
+        The page you're looking for doesn't exist or has been moved.<br>
+        Double-check the URL or head back to somewhere safe.
+      </p>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="{% url 'index' %}"
+          class="w-full sm:w-auto text-sm font-medium bg-primary text-white px-6 py-3 rounded-full hover:bg-primary-dark transition-colors">
+          Go to home
+        </a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}"
+            class="w-full sm:w-auto text-sm font-medium border border-border text-ink px-6 py-3 rounded-full hover:bg-surface transition-colors bg-card">
+            Go to dashboard
+          </a>
+        {% else %}
+          <a href="{% url 'account_login' %}"
+            class="w-full sm:w-auto text-sm font-medium border border-border text-ink px-6 py-3 rounded-full hover:bg-surface transition-colors bg-card">
+            Sign in
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-border py-6">
+    <p class="text-center text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
