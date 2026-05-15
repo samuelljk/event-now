@@ -3,7 +3,7 @@
 {% block title %}Dashboard — EventNow{% endblock %}
 
 {% block body %}
-  <div class="flex min-h-screen">
+  <nav class="flex min-h-screen">
 
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-60 bg-card border-r border-border flex flex-col translate-x-0 transition-transform duration-300 md:translate-x-0 -translate-x-full" aria-label="Organiser navigation">
@@ -14,7 +14,7 @@
         <div class="mt-3 flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
           <div class="min-w-0">
-            <div class="text-xs font-semibold text-ink truncate">{{ user.get_full_name }}</div>
+            <div class="text-xs font-semibold text-ink truncate">{{ user.first_name }} {{ user.last_name }}</div>
             <div class="flex items-center gap-1 mt-0.5">
               <span class="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-medium">{{ user.get_role_display }}</span>
             </div>
@@ -24,27 +24,30 @@
 
       <!-- Nav links -->
       <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto" aria-label="Dashboard navigation">
+        <!-- Browse event -->
+        <a href="{% url 'event_list' %}" class="flex items-center gap-3 px-3 py-3 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors border-b border-border">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Browse Events
+        </a>
+
+        <!-- Nav contents -->
         <a href="{% url 'organiser_dashboard' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary/8 text-primary text-sm font-medium" aria-current="page">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10-3a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/></svg>
           Dashboard
-        </a>
-        <a href="{% url 'event_list' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
-          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          My Events
         </a>
         <a href="{% url 'event_create' %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           Create Event
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2/40 text-sm font-medium cursor-not-allowed">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           Registrations
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2/40 text-sm font-medium cursor-not-allowed">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           Analytics
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2 text-sm font-medium hover:bg-surface hover:text-ink transition-colors">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-ink-2/40 text-sm font-medium cursor-not-allowed">
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           Settings
         </a>
@@ -69,9 +72,6 @@
         </form>
       </div>
     </aside>
-
-    <!-- Sidebar overlay (mobile) -->
-    <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-ink/20 hidden md:hidden backdrop-blur-sm" aria-hidden="true"></div>
 
     <!-- Main -->
     <div class="flex-1 md:ml-60 flex flex-col min-h-screen">
@@ -194,33 +194,6 @@
             </table>
           </div>
 
-          <!-- Mobile cards -->
-          <div class="md:hidden divide-y divide-border">
-            {% for event in events %}
-            <div class="p-5">
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <div>
-                  <div class="text-sm font-semibold text-ink">{{ event.title }}</div>
-                  <div class="text-xs text-ink-3 mt-0.5">{{ event.starts_at|date:"j M Y" }} · {{ event.session_set.count }} sessions</div>
-                </div>
-                {% if event.status == 'published' %}
-                  <span class="text-xs font-medium bg-success/10 text-green-700 px-2.5 py-1 rounded-full flex-shrink-0">Published</span>
-                {% elif event.status == 'draft' %}
-                  <span class="text-xs font-medium bg-warning/10 text-orange-700 px-2.5 py-1 rounded-full flex-shrink-0">Draft</span>
-                {% else %}
-                  <span class="text-xs font-medium bg-surface text-ink-3 border border-border px-2.5 py-1 rounded-full flex-shrink-0">{{ event.status|title }}</span>
-                {% endif %}
-              </div>
-              <div class="text-xs text-ink-2 mb-3">{{ event.eventregistration_set.count }} / {{ event.max_capacity }} registered</div>
-              <div class="flex gap-3 text-xs font-medium">
-                <a href="{% url 'event_detail' event.slug %}" class="text-primary hover:underline">View</a>
-                <a href="{% url 'event_edit' event.slug %}" class="text-ink-2 hover:text-ink">Edit</a>
-              </div>
-            </div>
-            {% empty %}
-            <div class="p-8 text-center text-sm text-ink-3">No events yet.</div>
-            {% endfor %}
-          </div>
         </div>
 
       </main>

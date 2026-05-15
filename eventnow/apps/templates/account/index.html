@@ -11,12 +11,11 @@
         <a href="#" class="text-sm text-ink-2 hover:text-ink transition-colors">Events</a>
         <a href="#features" class="text-sm text-ink-2 hover:text-ink transition-colors">Features</a>
         <a href="#pricing" class="text-sm text-ink-2 hover:text-ink transition-colors">Pricing</a>
-        <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Dashboard</a>
       </nav>
       <div class="flex items-center gap-3">
         {% if user.is_authenticated %}
-          <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Dashboard</a>
-          <a href="{% url 'dashboard' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity" aria-label="Go to your dashboard">
+          <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline border-r border-border pr-3">Dashboard</a>
+          <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity" aria-label="Go to your dashboard">
             <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
           </a>
         {% else %}
@@ -33,7 +32,6 @@
         <a href="#" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Events</a>
         <a href="#features" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Features</a>
         <a href="#pricing" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Pricing</a>
-        <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink py-2.5 transition-colors">Dashboard</a>
         <div class="flex gap-3 mt-3 pt-3 border-t border-border">
           {% if user.is_authenticated %}
             <a href="{% url 'dashboard' %}" class="flex-1 text-center text-sm bg-primary text-white py-2.5 rounded-full font-medium hover:bg-primary-dark transition-colors">Go to Dashboard</a>

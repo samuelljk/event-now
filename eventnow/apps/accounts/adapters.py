@@ -5,8 +5,8 @@ from django.conf import settings
 class CustomAccountAdapter(DefaultAccountAdapter):
     def get_login_redirect_url(self, request):
         if request.user.is_organiser():
-            return '/config/account/dashboard/organiser/'
-        return '/config/account/dashboard/attendee/'
+            return '/eventnow/account/dashboard/organiser/'
+        return '/eventnow/account/dashboard/attendee/'
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):

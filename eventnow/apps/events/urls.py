@@ -2,13 +2,15 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Landing / public event list
-    path('',                         views.index,          name='index'),
-    path('events/',                  views.event_list,     name='event_list'),
-    path('events/create/',           views.event_create,   name='event_create'),
-    path('events/<slug:slug>/',      views.event_detail,   name='event_detail'),
-    path('events/<slug:slug>/edit/', views.event_edit,     name='event_edit'),
-    path('events/<slug:slug>/delete/', views.event_delete, name='event_delete'),
+    # Landing Page
+    path('',                            views.index,            name='index'),
+
+    # Public Event Page
+    path('events/',                     views.event_list,       name='event_list'),
+    path('events/create/',              views.event_create,     name='event_create'),
+    path('events/<slug:slug>/',         views.event_detail,     name='event_detail'),
+    path('events/<slug:slug>/edit/',    views.event_edit,       name='event_edit'),
+    path('events/<slug:slug>/delete/',  views.event_delete,     name='event_delete'),
 
     # Tracks (nested under event slug)
     path('events/<slug:slug>/tracks/create/',

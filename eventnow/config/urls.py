@@ -16,6 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.shortcuts import render
+
+def error_view(request, exception=None):
+    return render(request, '404.html', status=404)
 
 urlpatterns = [
     path('eventnow/admin',      admin.site.urls),
@@ -27,3 +31,8 @@ urlpatterns = [
     path('eventnow/account/',   include('allauth.urls')),
     path('eventnow/account/',   include('apps.accounts.urls')),
 ]
+
+handler400 = error_view
+handler403 = error_view
+handler404 = error_view
+handler500 = error_view

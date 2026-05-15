@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Attendee Dashboard — EventNow{% endblock %}
+{% block title %}Dashboard — EventNow{% endblock %}
 
 {% block header %}
   <!-- Navigation -->
@@ -13,10 +13,9 @@
         <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Dashboard</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="{% url 'organiser_dashboard' %}" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Switch to Organiser</a>
         <form method="post" action="{% url 'account_logout' %}">
           {% csrf_token %}
-          <button type="submit" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Sign out</button>
+          <button type="submit" class="text-xs font-medium text-ink-2 border border-border px-3 py-1.5 rounded-full hover:bg-surface transition-colors hidden sm:inline-block">Sign Out</button>
         </form>
         <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center" aria-label="{{ user.get_full_name }} — view profile">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
@@ -28,7 +27,7 @@
 
 {% block content %}
 
-    <!-- Welcome + breadcrumb -->
+    <!-- Welcome + Breadcrumb -->
     <div class="max-w-5xl mx-auto px-6 py-10">
     <div class="flex items-start justify-between mb-8">
       <div>
@@ -69,7 +68,7 @@
 
         <!-- Upcoming events -->
         <section aria-labelledby="upcoming-heading">
-          <h2 id="upcoming-heading" class="text-sm font-semibold text-ink mb-4">Upcoming events</h2>
+          <h2 id="upcoming-heading" class="text-sm font-semibold text-ink mb-4">Upcoming Events</h2>
           <div class="space-y-3">
             {% for registration in upcoming_registrations %}
             <div class="bg-card border border-border rounded-2xl overflow-hidden">
@@ -99,15 +98,15 @@
                     </div>
                   </div>
                   <div class="flex flex-wrap gap-2">
-                    <a href="#" class="text-xs font-medium text-primary border border-primary/20 bg-primary/5 px-3.5 py-2 rounded-full hover:bg-primary/10 transition-colors">View event</a>
-                    <a href="#" class="text-xs font-medium text-ink-3 px-3.5 py-2 rounded-full hover:text-ink transition-colors">Manage booking</a>
+                    <a href="#" class="text-xs font-medium text-primary border border-primary/20 bg-primary/5 px-3.5 py-2 rounded-full hover:bg-primary/10 transition-colors">View Event</a>
+                    <a href="#" class="text-xs font-medium text-ink-3 px-3.5 py-2 rounded-full hover:text-ink transition-colors">Manage Booking</a>
                   </div>
                 </div>
               </div>
             </div>
             {% empty %}
             <div class="bg-card border border-border rounded-2xl p-8 text-center">
-              <p class="text-sm text-ink-3">No upcoming events. <a href="#" class="text-primary hover:underline">Browse events →</a></p>
+              <p class="text-sm text-ink-3">No upcoming events. <a href="#" class="text-primary hover:underline">Browse Events →</a></p>
             </div>
             {% endfor %}
           </div>
@@ -115,7 +114,7 @@
 
         <!-- Past events -->
         <section aria-labelledby="past-heading">
-          <h2 id="past-heading" class="text-sm font-semibold text-ink mb-4">Past events</h2>
+          <h2 id="past-heading" class="text-sm font-semibold text-ink mb-4">Past Events</h2>
           {% for registration in past_registrations %}
           <div class="bg-card border border-border rounded-2xl overflow-hidden opacity-70 mb-3">
             <div class="flex">
@@ -161,18 +160,18 @@
           <div class="flex items-center gap-3 mb-4">
             <div class="w-11 h-11 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
             <div>
-              <div class="text-sm font-semibold text-ink">{{ user.get_full_name }}</div>
+              <div class="text-sm font-semibold text-ink">{{ user.first_name }} {{ user.last_name }}</div>
               <div class="text-xs text-ink-2">{{ user.email }}</div>
             </div>
           </div>
           <div class="space-y-2">
-            <a href="{% url 'profile' %}" class="block text-center text-xs font-medium border border-border text-ink py-2.5 rounded-full hover:bg-surface transition-colors">View profile</a>
-            <a href="{% url 'profile_edit' %}" class="block text-center text-xs font-medium text-ink-2 py-2 hover:text-ink transition-colors">Edit profile</a>
+            <a href="{% url 'profile' %}" class="block text-center text-xs font-medium border border-border text-ink py-2.5 rounded-full hover:bg-surface transition-colors">View Profile</a>
+            <a href="{% url 'profile_edit' %}" class="block text-center text-xs font-medium text-ink-2 py-2 hover:text-ink transition-colors">Edit Profile</a>
             <form method="post" action="{% url 'account_logout' %}">
               {% csrf_token %}
               <button type="submit" class="flex items-center justify-center gap-1.5 w-full text-xs text-ink-3 hover:text-ink-2 transition-colors py-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                Sign out
+                Sign Out
               </button>
             </form>
           </div>
@@ -180,14 +179,14 @@
 
         <!-- Discover -->
         <div class="bg-card rounded-2xl border border-border p-5">
-          <h3 class="text-xs font-semibold text-ink-3 uppercase tracking-wider mb-4">Discover more</h3>
+          <h3 class="text-xs font-semibold text-ink-3 uppercase tracking-wider mb-4">Discover More</h3>
           <div class="space-y-3">
             <a href="#" class="flex items-start gap-3 group">
               <div class="h-10 w-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
                 <svg class="w-4 h-4 text-ink-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <div>
-                <div class="text-xs font-semibold text-ink group-hover:text-primary transition-colors">Browse all events</div>
+                <div class="text-xs font-semibold text-ink group-hover:text-primary transition-colors">Browse All Events</div>
                 <div class="text-xs text-ink-3 mt-0.5">6 events near you</div>
               </div>
             </a>
@@ -196,7 +195,7 @@
                 <svg class="w-4 h-4 text-ink-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
               </div>
               <div>
-                <div class="text-xs font-semibold text-ink group-hover:text-primary transition-colors">Featured event</div>
+                <div class="text-xs font-semibold text-ink group-hover:text-primary transition-colors">Featured Event</div>
                 <div class="text-xs text-ink-3 mt-0.5">Sydney Tech Summit 2026</div>
               </div>
             </a>
