@@ -10,7 +10,10 @@
 
         <!-- Logo / org name -->
         <div class="px-5 py-5 border-b border-border">
-          <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+          <a href="{% url 'index' %}" class="flex items-center gap-2">
+            <img src="{% static 'images/eventnow_black_logo_only.png' %}" alt="EventNow" class="h-6 w-auto">
+            <span class="text-base font-semibold text-ink tracking-tight">EventNow</span>
+          </a>
           <div class="mt-3 flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
             <div class="min-w-0">

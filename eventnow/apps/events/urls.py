@@ -3,14 +3,15 @@ from . import views
 
 urlpatterns = [
     # Landing Page
-    path('',                            views.index,            name='index'),
+    path('',                            views.index,            name='index'),              # Done
 
     # Public Event Page
-    path('events/',                     views.event_list,       name='event_list'),
-    path('events/suggest/',             views.event_suggest,    name='event_suggest'),
-    path('events/suggest/results/',     views.suggest_results,  name='suggest_results'),
+    path('events/',                     views.event_list,       name='event_list'),         # Done
+    path('events/suggest/',             views.event_suggest,    name='event_suggest'),      # Done
+    path('events/suggest/results/',     views.suggest_results,  name='suggest_results'),    # Done
+
+    path('events/<slug:slug>/',         views.event_detail,     name='event_detail'),       # Done
     path('events/create/',              views.event_create,     name='event_create'),
-    path('events/<slug:slug>/',         views.event_detail,     name='event_detail'),
     path('events/<slug:slug>/edit/',    views.event_edit,       name='event_edit'),
     path('events/<slug:slug>/delete/',  views.event_delete,     name='event_delete'),
 

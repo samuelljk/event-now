@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ event.title }} — EventNow{% endblock %}
 
@@ -7,17 +8,26 @@
 {% block header %}
 <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
   <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% url 'index' %}" class="flex items-center gap-2">
+      <img src="{% static 'images/eventnow_black_logo_only.png' %}" alt="EventNow" class="h-6 w-auto">
+      <span class="text-base font-semibold text-ink tracking-tight">EventNow</span>
+    </a>
     <div class="flex items-center gap-3">
-      <a href="{% url 'event_list' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        All events
-      </a>
       {% if user.is_authenticated %}
-        <a href="{% url 'dashboard' %}" class="text-sm font-medium border border-border text-ink px-4 py-2 rounded-full hover:bg-surface transition-colors">Dashboard</a>
+        <a href="{% url 'event_list' %}" class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors border-r border-border pr-3">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          All events
+        </a>
+        <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity" aria-label="Go to your dashboard">
+          <div class="w-8 h-8 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">{{ user.first_name|first|upper }}{{ user.last_name|first|upper }}</div>
+        </a>
       {% else %}
-        <a href="{% url 'account_login' %}" class="text-sm font-medium bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark transition-colors">Sign in</a>
+        <a href="{% url 'account_login' %}" class="text-sm text-ink-2 hover:text-ink transition-colors hidden sm:inline">Sign In</a>
+        <a href="{% url 'account_signup' %}" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors">Get Started</a>
       {% endif %}
+      <button id="menu-btn" class="md:hidden p-1.5 rounded-lg hover:bg-surface transition-colors" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -25,19 +35,6 @@
 
 {% block body %}
 <main id="main" class="flex-1">
-
-  <!-- Messages -->
-  {% if messages %}
-  <div class="max-w-5xl mx-auto px-6 pt-6">
-    {% for msg in messages %}
-    <div class="mb-3 px-4 py-3 rounded-xl text-sm font-medium
-      {% if msg.tags == 'success' %}bg-success/10 text-green-800{% else %}bg-danger/10 text-red-800{% endif %}">
-      {{ msg }}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
   <div class="max-w-5xl mx-auto px-6 py-8">
 
     <!-- Breadcrumb -->
@@ -216,7 +213,7 @@
           {% if already_registered %}
           <a href="{% url 'booking_detail' already_registered.id %}"
              class="block w-full text-center text-sm font-medium bg-success/10 text-green-700 border border-success/20 py-3 rounded-full hover:bg-success/20 transition-colors">
-            ✓ You're registered — view booking
+            ✓ You're registered — <strong>View Booking</strong>
           </a>
           {% elif event.status != 'published' %}
           <button disabled class="w-full text-sm font-medium bg-surface text-ink-3 py-3 rounded-full cursor-not-allowed border border-border">
@@ -239,10 +236,10 @@
     </div>
   </div>
 </main>
+{% endblock %}
 
 {% block footer %}
 <footer class="border-t border-border py-6 mt-8">
   <p class="text-center text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
 </footer>
-{% endblock %}
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Browse Events — EventNow{% endblock %}
 
@@ -8,7 +9,10 @@
   <!-- Navigation -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-      <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+      <a href="{% url 'index' %}" class="flex items-center gap-2">
+        <img src="{% static 'images/eventnow_black_logo_only.png' %}" alt="EventNow" class="h-6 w-auto">
+        <span class="text-base font-semibold text-ink tracking-tight">EventNow</span>
+      </a>
       <nav class="hidden md:flex items-center gap-7" aria-label="Main navigation">
         <a href="{% url 'event_list' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Events</a>
         <a href="{% url 'index' %}#features" class="text-sm text-ink-2 hover:text-ink transition-colors">Features</a>
@@ -69,18 +73,6 @@
     </div>
   </div>
 
-  <!-- Messages -->
-  <!--  {% if messages %}-->
-  <!--  <div class="max-w-5xl mx-auto px-6 pt-6">-->
-  <!--    {% for msg in messages %}-->
-  <!--    <div class="mb-3 px-4 py-3 rounded-xl text-sm font-medium-->
-  <!--      {% if msg.tags == 'success' %}bg-success/10 text-green-800{% else %}bg-danger/10 text-red-800{% endif %}">-->
-  <!--      {{ msg }}-->
-  <!--    </div>-->
-  <!--    {% endfor %}-->
-  <!--  </div>-->
-  <!--  {% endif %}-->
-
   <div class="max-w-5xl mx-auto px-6 py-8">
 
     {% if page_obj.object_list %}
@@ -101,7 +93,7 @@
 
         <div class="flex-1 p-5">
           <div class="flex items-center gap-2 mb-3">
-            <span class="text-xs font-medium bg-primary/8 text-primary px-2.5 py-0.5 rounded-full">
+            <span class="text-xs font-medium bg-primary/8 text-primary py-0.5 rounded-full">
               {{ event.starts_at|date:"j M Y" }}
             </span>
           </div>
