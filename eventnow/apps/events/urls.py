@@ -7,6 +7,8 @@ urlpatterns = [
 
     # Public Event Page
     path('events/',                     views.event_list,       name='event_list'),
+    path('events/suggest/',             views.event_suggest,    name='event_suggest'),
+    path('events/suggest/results/',     views.suggest_results,  name='suggest_results'),
     path('events/create/',              views.event_create,     name='event_create'),
     path('events/<slug:slug>/',         views.event_detail,     name='event_detail'),
     path('events/<slug:slug>/edit/',    views.event_edit,       name='event_edit'),

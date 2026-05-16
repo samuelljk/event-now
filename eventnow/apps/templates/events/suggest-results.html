@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Your Event Matches — EventNow{% endblock %}
+
+{% block body_class %}bg-surface text-ink font-sans min-h-screen flex flex-col{% endblock %}
+
+{% block header %}
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
+  <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% url 'event_list' %}"
+       class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Browse all events
+    </a>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main id="main" class="flex-1 py-12 px-6">
+  <div class="max-w-5xl mx-auto">
+
+    {% if error_msg %}
+    <div class="max-w-2xl mx-auto mb-8 px-4 py-3 bg-danger/10 text-red-800 text-sm rounded-xl font-mono break-all">
+      <strong>Debug error:</strong> {{ error_msg }}
+    </div>
+    {% endif %}
+
+    {% if suggested_events %}
+
+    <!-- Success header -->
+    <div class="text-center mb-10">
+      <div class="w-14 h-14 rounded-2xl bg-success/10 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-ink tracking-tight mb-1">We found some great matches!</h1>
+      <p class="text-sm text-ink-2">
+        Based on your answers, here are the events we think you'll love.
+      </p>
+    </div>
+
+    <!-- Event cards grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+      {% for event in suggested_events %}
+      <article class="bg-card border border-border rounded-2xl overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+
+        <!-- Cover image -->
+        {% if event.cover_image_url %}
+        <img src="{{ event.cover_image_url }}" alt="{{ event.title }}" class="w-full h-44 object-cover">
+        {% else %}
+        <div class="w-full h-44 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+          <svg class="w-10 h-10 text-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        {% endif %}
+
+        <div class="flex-1 p-5 flex flex-col">
+          <!-- AI match badge -->
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xs font-medium bg-primary/8 text-primary px-2.5 py-0.5 rounded-full">
+              {{ event.starts_at|date:"j M Y" }}
+            </span>
+            <span class="text-xs font-medium bg-success/10 text-green-700 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+              </svg>
+              AI Match
+            </span>
+          </div>
+
+          <h2 class="text-base font-semibold text-ink mb-1 leading-snug">{{ event.title }}</h2>
+
+          {% if event.venue %}
+          <p class="text-xs text-ink-2 flex items-center gap-1 mb-3">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            {{ event.venue.name }}, {{ event.venue.city }}
+          </p>
+          {% endif %}
+
+          <p class="text-xs text-ink-3 leading-relaxed line-clamp-2 mb-4 flex-1">
+            {{ event.description }}
+          </p>
+
+          <a href="{% url 'event_detail' event.slug %}"
+             class="inline-block text-center text-xs font-medium bg-primary text-white px-4 py-2.5 rounded-full
+                    hover:bg-primary-dark transition-colors">
+            View event →
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <a href="{% url 'event_suggest' %}"
+         class="text-sm font-medium border border-border text-ink px-6 py-3 rounded-full hover:bg-card transition-colors">
+        ↩ Retake quiz
+      </a>
+      <a href="{% url 'event_list' %}"
+         class="text-sm font-medium border border-primary/20 bg-primary/5 text-primary px-6 py-3 rounded-full hover:bg-primary/10 transition-colors">
+        Browse all events
+      </a>
+    </div>
+
+    {% else %}
+
+    <!-- No matches state -->
+    <div class="max-w-md mx-auto text-center py-16">
+      <div class="w-16 h-16 bg-surface border border-border rounded-2xl flex items-center justify-center mx-auto mb-5">
+        <svg class="w-7 h-7 text-ink-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-ink mb-2">No matches found</h1>
+      <p class="text-sm text-ink-2 leading-relaxed mb-8">
+        We couldn't find an event that perfectly fits your profile right now —
+        but new events are added regularly!
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="{% url 'event_suggest' %}"
+           class="text-sm font-medium border border-border text-ink px-6 py-3 rounded-full hover:bg-card transition-colors">
+          ↩ Try different answers
+        </a>
+        <a href="{% url 'event_list' %}"
+           class="text-sm font-medium bg-primary text-white px-6 py-3 rounded-full hover:bg-primary-dark transition-colors">
+          Browse all events →
+        </a>
+      </div>
+    </div>
+
+    {% endif %}
+
+  </div>
+</main>
+
+{% block footer %}
+<footer class="border-t border-border py-6">
+  <p class="text-center text-xs text-ink-3">© 2026 EventNow. All rights reserved.</p>
+</footer>
+{% endblock %}
+{% endblock %}

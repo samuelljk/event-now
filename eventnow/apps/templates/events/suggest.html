@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Find Your Event — EventNow{% endblock %}
+
+{% block body_class %}bg-surface text-ink font-sans min-h-screen flex flex-col{% endblock %}
+
+{% block header %}
+<header class="bg-white/80 backdrop-blur-xl border-b border-border">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% url 'event_list' %}"
+       class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Browse all events
+    </a>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main id="main" class="flex-1 flex items-center justify-center px-6 py-16">
+  <div class="w-full max-w-xl">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-ink tracking-tight">Find your perfect event</h1>
+      <p class="text-sm text-ink-2 mt-1">Answer {{ total }} quick questions and we'll match you with events.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+
+      <!-- Progress bar -->
+      <div class="h-1.5 bg-surface">
+        <div class="h-full bg-primary rounded-full transition-all duration-500"
+             style="width: {{ progress_pct }}%"></div>
+      </div>
+
+      <div class="px-8 py-8">
+
+        <!-- Step indicator -->
+        <p class="text-xs font-medium text-ink-3 uppercase tracking-wider mb-2">
+          Step {{ question.step }} of {{ total }}
+        </p>
+
+        <!-- Question -->
+        <h2 class="text-lg font-bold text-ink mb-6">
+          {{ question.icon }} {{ question.question }}
+        </h2>
+
+        <!-- Options form -->
+        <form method="post" action="{% url 'event_suggest' %}" id="suggest-form">
+          {% csrf_token %}
+          <input type="hidden" name="step" value="{{ question.step }}">
+
+          <div class="space-y-2.5">
+            {% for option in question.options %}
+            <label class="flex items-center gap-3 p-4 border border-border rounded-xl cursor-pointer
+                          hover:border-primary/40 hover:bg-primary/5 transition-all group
+                          has-[:checked]:border-primary has-[:checked]:bg-primary/8">
+              <input type="radio" name="answer" value="{{ option }}"
+                     class="w-4 h-4 accent-primary flex-shrink-0"
+                     onchange="document.getElementById('suggest-form').submit()">
+              <span class="text-sm font-medium text-ink group-hover:text-primary transition-colors">
+                {{ option }}
+              </span>
+            </label>
+            {% endfor %}
+          </div>
+
+          <!-- Fallback submit (in case JS is disabled) -->
+          <button type="submit"
+                  class="mt-6 w-full text-sm font-medium bg-primary text-white py-3 rounded-full
+                         hover:bg-primary-dark transition-colors">
+            Continue →
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Cancel -->
+    <p class="text-center mt-5 text-xs text-ink-3">
+      Changed your mind?
+      <a href="{% url 'event_list' %}" class="text-primary hover:underline">Browse all events</a>
+    </p>
+
+  </div>
+</main>
+{% endblock %}
