@@ -8,8 +8,8 @@
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
       <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
       <nav class="hidden md:flex items-center gap-7" aria-label="Main navigation">
-        <a href="#" class="text-sm text-ink-2 hover:text-ink transition-colors">Browse Events</a>
-        <a href="#" class="text-sm text-ink-2 hover:text-ink transition-colors">My Bookings</a>
+        <a href="{% url 'event_list' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Browse Events</a>
+        <a href="{% url 'attendee_dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">My Bookings</a>
         <a href="{% url 'dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Dashboard</a>
       </nav>
       <div class="flex items-center gap-3">
@@ -41,25 +41,25 @@
         <h1 class="text-2xl font-bold text-ink tracking-tight">My Events</h1>
         <p class="text-sm text-ink-2 mt-1">All your upcoming and past registrations in one place.</p>
       </div>
-      <a href="#" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors hidden sm:inline-block">Browse Events</a>
+      <a href="{% url 'event_list' %}" class="text-sm bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary-dark transition-colors hidden sm:inline-block">Browse Events</a>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-4 mb-8">
       <div class="bg-card rounded-2xl p-5 border border-border">
         <div class="text-xs text-ink-2 mb-1 font-medium">Upcoming</div>
-        <div class="text-3xl font-bold text-ink">{{ upcoming_registrations.count }}</div>
+        <div class="text-3xl font-bold text-ink">{{ upcoming_registrations|length }}</div>
         <div class="text-xs text-ink-3 mt-1">events registered</div>
       </div>
       <div class="bg-card rounded-2xl p-5 border border-border">
         <div class="text-xs text-ink-2 mb-1 font-medium">Attended</div>
-        <div class="text-3xl font-bold text-ink">{{ past_registrations.count }}</div>
+        <div class="text-3xl font-bold text-ink">{{ past_registrations|length }}</div>
         <div class="text-xs text-ink-3 mt-1">events total</div>
       </div>
       <div class="bg-card rounded-2xl p-5 border border-border">
-        <div class="text-xs text-ink-2 mb-1 font-medium">Total</div>
-        <div class="text-3xl font-bold text-ink">{{ total_registrations }}</div>
-        <div class="text-xs text-ink-3 mt-1">registrations</div>
+        <div class="text-xs text-ink-2 mb-1 font-medium">Sessions</div>
+        <div class="text-3xl font-bold text-ink">{{ total_sessions }}</div>
+        <div class="text-xs text-ink-3 mt-1">currently booked</div>
       </div>
     </div>
 
@@ -73,14 +73,23 @@
             {% for registration in upcoming_registrations %}
             <div class="bg-card border border-border rounded-2xl overflow-hidden">
               <div class="flex">
-                <div class="w-1 bg-success flex-shrink-0 rounded-l-2xl"></div>
+                <div class="w-1 {% if registration.status == 'confirmed' %}bg-success{% else %}bg-warning{% endif %} flex-shrink-0 rounded-l-2xl"></div>
                 <div class="flex-1 p-5">
+
+                  <!-- Header row -->
                   <div class="flex items-start justify-between gap-3 mb-3">
                     <div>
                       <span class="text-xs font-medium bg-success/10 text-green-700 px-2.5 py-0.5 rounded-full">{{ registration.status|title }}</span>
                       <h3 class="text-base font-semibold text-ink mt-1.5">{{ registration.event.title }}</h3>
                     </div>
+                    {% if registration.days_away is not None %}
+                    <span class="text-xs font-semibold text-primary whitespace-nowrap flex-shrink-0">
+                      {{ registration.days_away }} day{{ registration.days_away|pluralize }} away
+                    </span>
+                    {% endif %}
                   </div>
+
+                  <!-- Meta row -->
                   <div class="flex flex-wrap gap-x-4 gap-y-1.5 mb-4 text-xs text-ink-2">
                     <div class="flex items-center gap-1.5">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -94,19 +103,42 @@
                     {% endif %}
                     <div class="flex items-center gap-1.5">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                      {{ registration.sessionregistration_set.count }} sessions registered
+                      {{ registration.sessionregistration_set.count }} session{{ registration.sessionregistration_set.count|pluralize }} registered
                     </div>
                   </div>
-                  <div class="flex flex-wrap gap-2">
-                    <a href="#" class="text-xs font-medium text-primary border border-primary/20 bg-primary/5 px-3.5 py-2 rounded-full hover:bg-primary/10 transition-colors">View Event</a>
-                    <a href="#" class="text-xs font-medium text-ink-3 px-3.5 py-2 rounded-full hover:text-ink transition-colors">Manage Booking</a>
+
+                  <!-- Booked sessions list -->
+                  {% with session_regs=registration.sessionregistration_set.all %}
+                  {% if session_regs %}
+                  <div class="bg-surface rounded-xl p-4 mb-4">
+                    <p class="text-xs font-semibold text-ink-3 uppercase tracking-wider mb-2">Your sessions</p>
+                    <ul class="space-y-1.5">
+                      {% for sr in session_regs %}
+                      <li class="flex items-center gap-2 text-xs text-ink-2">
+                        <svg class="w-3.5 h-3.5 text-success flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        {{ sr.session.title }}
+                        <span class="text-ink-3">· {{ sr.session.starts_at|date:"H:i" }}</span>
+                      </li>
+                      {% endfor %}
+                    </ul>
                   </div>
+                  {% endif %}
+                  {% endwith %}
+
+                  <!-- Actions -->
+                  <div class="flex flex-wrap gap-2">
+                    <a href="{% url 'event_detail' registration.event.slug %}"
+                       class="text-xs font-medium text-primary border border-primary/20 bg-primary/5 px-3.5 py-2 rounded-full hover:bg-primary/10 transition-colors">View event</a>
+                    <a href="{% url 'booking_detail' registration.id %}"
+                       class="text-xs font-medium text-ink-2 border border-border px-3.5 py-2 rounded-full hover:bg-surface hover:text-ink transition-colors">Manage booking</a>
+                  </div>
+
                 </div>
               </div>
             </div>
             {% empty %}
             <div class="bg-card border border-border rounded-2xl p-8 text-center">
-              <p class="text-sm text-ink-3">No upcoming events. <a href="#" class="text-primary hover:underline">Browse Events →</a></p>
+              <p class="text-sm text-ink-3">No upcoming events. <a href="{% url 'event_list' %}" class="text-primary hover:underline">Browse events →</a></p>
             </div>
             {% endfor %}
           </div>
@@ -181,13 +213,13 @@
         <div class="bg-card rounded-2xl border border-border p-5">
           <h3 class="text-xs font-semibold text-ink-3 uppercase tracking-wider mb-4">Discover More</h3>
           <div class="space-y-3">
-            <a href="#" class="flex items-start gap-3 group">
+            <a href="{% url 'event_list' %}" class="flex items-start gap-3 group">
               <div class="h-10 w-10 rounded-xl bg-surface flex items-center justify-center flex-shrink-0">
                 <svg class="w-4 h-4 text-ink-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
               </div>
               <div>
                 <div class="text-xs font-semibold text-ink group-hover:text-primary transition-colors">Browse All Events</div>
-                <div class="text-xs text-ink-3 mt-0.5">6 events near you</div>
+                <div class="text-xs text-ink-3 mt-0.5">Discover what's on</div>
               </div>
             </a>
             <a href="#" class="flex items-start gap-3 group">

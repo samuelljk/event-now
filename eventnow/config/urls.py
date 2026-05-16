@@ -27,6 +27,9 @@ urlpatterns = [
     # Events
     path('eventnow/',           include('apps.events.urls')),
 
+    # Bookings
+    path('eventnow/',           include('apps.bookings.urls')),
+
     # Accounts
     path('eventnow/account/',   include('allauth.urls')),
     path('eventnow/account/',   include('apps.accounts.urls')),

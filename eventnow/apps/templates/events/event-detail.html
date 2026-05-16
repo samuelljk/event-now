@@ -213,9 +213,21 @@
 
         <!-- Register CTA -->
         {% if user.is_authenticated and user.is_attendee %}
-        <button class="w-full text-sm font-medium bg-primary text-white py-3 rounded-full hover:bg-primary-dark transition-colors">
-          Register for this event
-        </button>
+          {% if already_registered %}
+          <a href="{% url 'booking_detail' already_registered.id %}"
+             class="block w-full text-center text-sm font-medium bg-success/10 text-green-700 border border-success/20 py-3 rounded-full hover:bg-success/20 transition-colors">
+            ✓ You're registered — view booking
+          </a>
+          {% elif event.status != 'published' %}
+          <button disabled class="w-full text-sm font-medium bg-surface text-ink-3 py-3 rounded-full cursor-not-allowed border border-border">
+            Registration unavailable
+          </button>
+          {% else %}
+          <a href="{% url 'event_register' event.slug %}"
+             class="block w-full text-center text-sm font-medium bg-primary text-white py-3 rounded-full hover:bg-primary-dark transition-colors">
+            Register for this event
+          </a>
+          {% endif %}
         {% elif not user.is_authenticated %}
         <a href="{% url 'account_login' %}?next={{ request.path }}"
            class="block w-full text-center text-sm font-medium bg-primary text-white py-3 rounded-full hover:bg-primary-dark transition-colors">

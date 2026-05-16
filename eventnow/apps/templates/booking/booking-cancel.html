@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Cancel Registration — EventNow{% endblock %}
+
+{% block body_class %}bg-surface text-ink font-sans min-h-screen flex flex-col{% endblock %}
+
+{% block header %}
+<header class="bg-white/80 backdrop-blur-xl border-b border-border">
+  <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
+    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% url 'booking_detail' registration.id %}"
+       class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      Back to booking
+    </a>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main id="main" class="flex-1 flex items-center justify-center px-6 py-20">
+  <div class="max-w-md w-full">
+    <div class="bg-card border border-border rounded-2xl overflow-hidden">
+
+      <div class="px-8 py-6 border-b border-border">
+        <div class="w-12 h-12 rounded-2xl bg-danger/10 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <h1 class="text-xl font-bold text-ink mb-2">Cancel registration</h1>
+        <p class="text-sm text-ink-2 leading-relaxed">
+          Are you sure you want to cancel your registration for
+          <strong class="text-ink">{{ registration.event.title }}</strong>?
+          Your spot will be released and cannot be guaranteed if you re-register.
+        </p>
+      </div>
+
+      <div class="px-8 py-4 bg-surface border-b border-border text-sm">
+        <div class="font-medium text-ink">{{ registration.event.title }}</div>
+        <div class="text-xs text-ink-2 mt-0.5">{{ registration.event.starts_at|date:"j M Y" }}
+          {% if registration.event.venue %}· {{ registration.event.venue.name }}{% endif %}
+        </div>
+      </div>
+
+      <div class="px-8 py-6 flex items-center justify-between">
+        <a href="{% url 'booking_detail' registration.id %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Keep my spot</a>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit"
+                  class="text-sm font-medium bg-danger text-white px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
+            Yes, cancel registration
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from .decorators import organiser_required, attendee_required
 from .forms import ProfileEditForm
+from apps.bookings.models import SessionRegistration
 
 
 @login_required
@@ -26,13 +27,32 @@ def organiser_dashboard(request):
 @attendee_required
 def attendee_dashboard(request):
     now = timezone.now()
-    all_registrations = request.user.eventregistration_set.select_related('event', 'event__venue').all()
-    upcoming = all_registrations.filter(event__starts_at__gte=now)
-    past = all_registrations.filter(event__starts_at__lt=now)
+    all_registrations = (
+        request.user.eventregistration_set
+        .select_related('event', 'event__venue')
+        .prefetch_related('sessionregistration_set__session__track')
+        .all()
+    )
+
+    # Upcoming — annotate each registration with days_away
+    upcoming = []
+    for reg in all_registrations.filter(event__starts_at__gte=now).order_by('event__starts_at'):
+        reg.days_away = (reg.event.starts_at - now).days
+        upcoming.append(reg)
+
+    past = list(
+        all_registrations.filter(event__starts_at__lt=now).order_by('-event__starts_at')
+    )
+
+    total_sessions = SessionRegistration.objects.filter(
+        registration__user=request.user
+    ).count()
+
     return render(request, 'account/attendee-dashboard.html', {
         'upcoming_registrations': upcoming,
-        'past_registrations': past,
-        'total_registrations': all_registrations.count(),
+        'past_registrations':     past,
+        'total_registrations':    all_registrations.count(),
+        'total_sessions':         total_sessions,
     })
 
 

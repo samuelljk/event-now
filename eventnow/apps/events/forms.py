@@ -53,6 +53,7 @@ class EventForm(forms.ModelForm):
         self.fields['cover_image_url'].required = False
         self.fields['starts_at'].input_formats = ['%Y-%m-%dT%H:%M']
         self.fields['ends_at'].input_formats   = ['%Y-%m-%dT%H:%M']
+        self.fields['venue'].empty_label = 'Select a venue'
 
     def save(self, commit=True):
         instance = super().save(commit=False)

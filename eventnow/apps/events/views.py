@@ -42,13 +42,22 @@ def event_list(request):
 
 
 def event_detail(request, slug):
+    from apps.bookings.models import EventRegistration
     event  = get_object_or_404(Event, slug=slug)
     tracks = event.track_set.prefetch_related('session_set').order_by('name')
     is_owner = request.user.is_authenticated and event.organiser == request.user
+
+    already_registered = None
+    if request.user.is_authenticated and not is_owner:
+        already_registered = EventRegistration.objects.filter(
+            event=event, user=request.user
+        ).first()
+
     return render(request, 'events/event-detail.html', {
-        'event':    event,
-        'tracks':   tracks,
-        'is_owner': is_owner,
+        'event':              event,
+        'tracks':             tracks,
+        'is_owner':           is_owner,
+        'already_registered': already_registered,
     })
 
 
