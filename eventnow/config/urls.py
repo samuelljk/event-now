@@ -22,7 +22,7 @@ def error_view(request, exception=None):
     return render(request, '404.html', status=404)
 
 urlpatterns = [
-    path('eventnow/admin',      admin.site.urls),
+    path('eventnow/admin/',     admin.site.urls),
 
     # Events
     path('eventnow/',           include('apps.events.urls')),

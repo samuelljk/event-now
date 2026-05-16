@@ -59,6 +59,7 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="8fc93825-117d-4320-bb99-e23009633924" dataset="main.django_migrations" active-filter-id="" />
+    <filter-actions connection-id="8fc93825-117d-4320-bb99-e23009633924" dataset="main.apps_event" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
