@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ action }} Session — EventNow{% endblock %}
 
@@ -7,7 +8,10 @@
 {% block header %}
 <header class="bg-white/80 backdrop-blur-xl border-b border-border">
   <div class="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-    <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+    <a href="{% url 'index' %}" class="flex items-center gap-2">
+      <img src="{% static 'images/eventnow_black_logo_only.png' %}" alt="EventNow" class="h-6 w-auto">
+      <span class="text-base font-semibold text-ink tracking-tight">EventNow</span>
+    </a>
     <a href="{% url 'event_detail' event.slug %}"
        class="flex items-center gap-1.5 text-sm text-ink-2 hover:text-ink transition-colors">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Dashboard — EventNow{% endblock %}
 
@@ -6,7 +7,10 @@
   <!-- Navigation -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-border">
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-      <a href="{% url 'index' %}" class="text-base font-semibold text-ink tracking-tight">EventNow</a>
+      <a href="{% url 'index' %}" class="flex items-center gap-2">
+        <img src="{% static 'images/eventnow_black_logo_only.png' %}" alt="EventNow" class="h-6 w-auto">
+        <span class="text-base font-semibold text-ink tracking-tight">EventNow</span>
+      </a>
       <nav class="hidden md:flex items-center gap-7" aria-label="Main navigation">
         <a href="{% url 'event_list' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">Browse Events</a>
         <a href="{% url 'attendee_dashboard' %}" class="text-sm text-ink-2 hover:text-ink transition-colors">My Bookings</a>
